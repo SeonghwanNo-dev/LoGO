@@ -98,16 +98,15 @@ def download_datasets(repo_id, verified_names, base_save_path):
     for name, files in verified_names.items():
         for file in files:
             try:
-                print(f"Downloading: {file} from {name}...", flush=True)
-        
-                save_path = os.path.join(base_save_path, file)        
+                print(f"Download: {file} from {name}...", flush=True)
+                save_path = os.path.join(base_save_path, file)    
                 if os.path.exists(save_path):
                     print(f"skipped: {save_path}\n")
                     continue
                 else:
-                    print(f"resumed: {save_path} ")
+                    print(f"download: {save_path} ")
                     # Load & Save
-                    dataset = load_dataset(repo_id, data_files=f"{name}.json", download_mode="force_redownload")
+                    dataset = load_dataset(repo_id, data_files=file, download_mode="force_redownload")
                     dataset.save_to_disk(save_path)
                 
                 print("▶ DONE")
@@ -150,8 +149,12 @@ if __name__ == "__main__":
 [root/dataset_2]
 - Using the huggingface's datasets
 - I organized the datasets into two partitions: Partition 1 (datasets containing *) and Partition 2 (datasets without *)
-- Status: Partition 1 was downloaded successfully without any issues. However, Partition 2 wasn't
-- P2 Failed with the following error: "FAILED: Couldn't find cache for lorahub/flanv2 for config 'default-d89c53826f688676".
-
-I'm planning to resolve this issue tomorrow...
+- Status: 241 datasets are downloaded
+(
+    Total: 260
+    Not found (step 2): 2
+    (hotpotqa, glue_rte)
+    Failed (step 3): 15
+    ('./local_flan_v2/coqa:1.0.0.json', './local_flan_v2/drop:2.0.0.json', './local_flan_v2/openbookqa:0.1.0.json', './local_flan_v2/quac:1.0.0.json', './local_flan_v2/snli:1.1.0.json', './local_flan_v2/sentiment140:1.0.0.json', './local_flan_v2/trec:1.0.0.json', './local_flan_v2/hellaswag:1.1.0.json', './local_flan_v2/lambada:1.0.0.json', './local_flan_v2/piqa:1.0.0.json', './local_flan_v2/winogrande:1.1.0.json', './local_flan_v2/aeslc:1.0.0.json', './local_flan_v2/samsum:1.0.0.json', './local_flan_v2/gigaword:1.2.0.json', './local_flan_v2/huggingface:xsum.json')
+)
 '''
