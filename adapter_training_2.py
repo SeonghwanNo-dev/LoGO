@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 import sys
 from typing import List
@@ -133,7 +133,7 @@ def train(
     model.config.pad_token_id = model.config.eos_token_id
 
     
-    # 2. Data Processing
+    # 2. Data Processing <- 고치는 중
     full_dataset = load_from_disk(data_path)
     dataset = full_dataset["train"]
     
@@ -256,10 +256,9 @@ if __name__ == "__main__":
     #     print(f"Sample {i} Input: {dataset['train'][i]['inputs']}")
     #     print(f"Sample {i} Target: {dataset['train'][i]['targets']}")
     #     print("-" * 50)
-        
-        
+    
 
-    base_path = "./dataset_2/local_flan_v2_1/"
+    base_path = "./dataset_2/local_flan_v2_2"
     task_folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
 
     done_path = "./lora_adapters_fine_tuned/5/"
@@ -280,7 +279,7 @@ if __name__ == "__main__":
                 base_model = "meta-llama/Llama-3.1-8B-Instruct",
                 model_type = "LLaMA",
                 data_path = full_path,
-                output_dir = f"./lora_adapters_fine_tuned/6_1/{task}",
+                output_dir = f"./lora_adapters_fine_tuned/6_2/{task}",
                 adapter_name = "lora",
                 wandb_project = "LoGo Adapters_5",
                 wandb_run_name = task,
