@@ -177,7 +177,7 @@ def train(
         eval_steps=eval_step,
         save_steps=save_step,
         output_dir=output_dir,
-        save_total_limit=3,
+        save_total_limit=2,
         ddp_find_unused_parameters=False,
         report_to="wandb",
         run_name=wandb_run_name,
@@ -259,27 +259,35 @@ if __name__ == "__main__":
     base_path = "./dataset_2/local_flan_v2/"
     task_folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
 
+    done_path = "./lora_adapters_fine_tuned/5/"
+    done_task_folders = [f for f in os.listdir(done_path) if os.path.isdir(os.path.join(done_path, f))]
+    print(done_task_folders)
+
     for task in task_folders:
         
         full_path = os.path.join(base_path, task)
-        print(f"\n" + "="*50)
-        print(f"Current Task: {task}")
-        print("="*50 + "\n")
-        train(
-            base_model = "meta-llama/Llama-3.1-8B-Instruct",
-            model_type = "LLaMA",
-            data_path = full_path,
-            output_dir = f"./lora_adapters_fine_tuned/5/{task}",
-            adapter_name = "lora",
-            wandb_project = "LoGo Adapters_5",
-            wandb_run_name = task,
-            wandb_watch = "false",  # options: false | gradients | all
-            wandb_log_model = "false",  # options: false | true
-            resume_from_checkpoint = None,  # either training checkpoint or final adapter
-            # num_epochs = 1,
-            eval_step = 50,
-            save_step = 50,
-        )
+        
+        if task in done_task_folders:
+            print(f"{task} is done")
+        else:
+            print(f"\n" + "="*50)
+            print(f"Current Task: {task}")
+            print("="*50 + "\n")
+            train(
+                base_model = "meta-llama/Llama-3.1-8B-Instruct",
+                model_type = "LLaMA",
+                data_path = full_path,
+                output_dir = f"./lora_adapters_fine_tuned/5/{task}",
+                adapter_name = "lora",
+                wandb_project = "LoGo Adapters_5",
+                wandb_run_name = task,
+                wandb_watch = "false",  # options: false | gradients | all
+                wandb_log_model = "false",  # options: false | true
+                resume_from_checkpoint = None,  # either training checkpoint or final adapter
+                # num_epochs = 1,
+                eval_step = 50,
+                save_step = 50,
+            )
 
         # GPU Memory Cleanup
         gc.collect()
