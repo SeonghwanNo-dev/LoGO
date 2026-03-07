@@ -262,8 +262,13 @@ if __name__ == "__main__":
     base_path = "./dataset_2/local_flan_v2_1/"
     task_folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
 
-    done_path = "./lora_adapters_fine_tuned/5/"
-    done_task_folders = [f for f in os.listdir(done_path) if os.path.isdir(os.path.join(done_path, f))]
+    done_path_1 = "./lora_adapters_fine_tuned/5/"
+    done_task_folders_1 = [f for f in os.listdir(done_path_1) if os.path.isdir(os.path.join(done_path_1, f))]
+    done_path_2 = "./lora_adapters_fine_tuned/6_1/"
+    done_task_folders_2 = [f for f in os.listdir(done_path_2) if os.path.isdir(os.path.join(done_path_2, f))]
+    
+    done_task_folders = done_task_folders_1 + done_task_folders_2
+
     print(done_task_folders)
 
     for task in task_folders:
