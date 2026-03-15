@@ -1,71 +1,82 @@
 import os
-import pickle
 import time
 import random
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
 from googleapiclient.errors import HttpError
 
-def upload_to_drive(file_path, folder_id, max_retries=5):
+
+# 1. Path and Configuration Variables
+TOKEN_FILE = 'token.json'              # Name of the authentication token file
+CRED_FILE = 'credentials.json'         # Name of the credential file from Google Console
+TARGET_FILE = './backup_6_3_10.zip'    # File to be uploaded
+FOLDER_ID = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw' # Google Drive Folder ID
+
+
+def get_credentials():
     creds = None
-    # Load credentials from token.json
-    if os.path.exists('token.json'):
-        with open('token.json', 'rb') as token:
-            creds = pickle.load(token)
     
-    # Refresh token if it's expired or invalid
+    # 1. Check if the token.json file already exists
+    if os.path.exists(TOKEN_FILE):
+        # Important: Use the Credentials function instead of pickle to avoid '{' errors.
+        creds = Credentials.from_authorized_user_file(TOKEN_FILE)
+    
+    # 2. Handle cases where credentials are missing or invalid
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
+            print("🔄 Token expired. Refreshing...")
             creds.refresh(Request())
-            with open('token.json', 'wb') as token:
-                pickle.dump(creds, token)
-
-    service = build('drive', 'v3', credentials=creds)
-
-    file_metadata = {
-        'name': os.path.basename(file_path),
-        'parents': [folder_id]
-    }
-
-    # Retry loop using exponential backoff
-    for attempt in range(max_retries):
-        try:
-            # chunksize set to 5MB for stable large file handling
-            media = MediaFileUpload(file_path, resumable=True, chunksize=5*1024*1024)
-            request = service.files().create(body=file_metadata, media_body=media, fields='id')
+        else:
+            # Requires a local browser or manual auth logic to execute this block.
+            print("❌ No valid credentials found. Please check token.json.")
+            return None
             
-            print(f"🚀 Uploading '{os.path.basename(file_path)}'... (Attempt {attempt + 1}/{max_retries})")
+        # Save the refreshed token back to the file
+        with open(TOKEN_FILE, 'w') as token:
+            token.write(creds.to_json())
             
-            response = None
-            while response is None:
-                status, response = request.next_chunk()
-                if status:
-                    print(f"📤 Progress: {int(status.progress() * 100)}%")
-            
-            print(f"✅ Success! File ID: {response.get('id')}")
-            return True # Return True on successful upload
+    return creds
 
-        except HttpError as e:
-            # Retry on transient server errors (500, 502, 503, 504)
-            if e.resp.status in [500, 502, 503, 504]:
-                wait_time = (2 ** attempt) + random.random() # Exponentially increase wait time
-                print(f"⚠️ Google server error ({e.resp.status}). Retrying in {wait_time:.2f} seconds...")
-                time.sleep(wait_time)
-            else:
-                # Do not retry for non-transient errors (e.g., 403 Permission, 404 Not Found)
-                raise e
-        except Exception as e:
-            print(f"❌ Unexpected error: {e}")
-            if attempt < max_retries - 1:
-                time.sleep(5)
-            else:
-                raise e
+def upload_to_drive(file_path, folder_id):
+    try:
+        creds = get_credentials()
+        if not creds: return
 
-    print("🚫 Maximum retry attempts exceeded. Upload failed.")
-    return False
+        service = build('drive', 'v3', credentials=creds)
+        
+        file_metadata = {
+            'name': os.path.basename(file_path),
+            'parents': [folder_id]
+        }
+
+        # Transfer logic (Retry up to 5 times)
+        for attempt in range(5):
+            try:
+                media = MediaFileUpload(file_path, resumable=True, chunksize=5*1024*1024)
+                request = service.files().create(body=file_metadata, media_body=media, fields='id')
+                
+                print(f"🚀 Uploading {os.path.basename(file_path)}... (Attempt {attempt+1})")
+                
+                response = None
+                while response is None:
+                    status, response = request.next_chunk()
+                    if status:
+                        print(f"📤 Progress: {int(status.progress() * 100)}%")
+                
+                print(f"✅ Success! File ID: {response.get('id')}")
+                return
+
+            except HttpError as e:
+                # Exponential backoff for server-side errors
+                if e.resp.status in [500, 502, 503, 504]:
+                    time.sleep((2 ** attempt) + random.random())
+                else:
+                    raise e
+                    
+    except Exception as e:
+        print(f"❌ Error occurred: {e}")
 
 if __name__ == "__main__":
-    GOOGLE_DRIVE_FOLDER_ID = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw'
-    LOCAL_FILE = './backup6_1.zip'
-    upload_to_drive(LOCAL_FILE, GOOGLE_DRIVE_FOLDER_ID)
+    upload_to_drive(file_path=TARGET_FILE, folder_id=FOLDER_ID)
