@@ -148,7 +148,13 @@ def process_sequentially():
                 print(f" ❓ [EMPTY] {task_dir.name}: No checkpoints found inside")
 
             # 4. 기준(10.0)을 통과하지 못한 태스크는 여기서 즉시 삭제 (다른 태스크에 영향X)
-            if not is_task_complete:
+            if is_task_complete:
+                for ckpt in task_ckpts:
+                    if ckpt.is_dir():
+                        shutil.rmtree(ckpt)
+                print(f" 🧹 [CLEAN] Removed all checkpoints from {task_dir.name}. Keeping only weights.")
+            else:
+                # 통과 못 했으면 폴더 전체 삭제
                 print(f" 🗑️  Removing failed task: {task_dir.name}")
                 shutil.rmtree(task_dir)
 
