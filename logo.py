@@ -20,8 +20,8 @@ num_adapters = 10
 q_results = []
 v_results = []
 loaded_adapters = []
-task_name = "super_glue-cb-t5-prompt"
-seq_len = 0
+task_name = "arc_easy"
+current_input_id = None
 dirty = 0
 handle_q = None
 handle_v = None
@@ -82,15 +82,16 @@ def apply_hook(module, input, output, weight, adapters, mode="q"):
             delta += scaling * weight[i] * ((x @ a_w.T) @ b_w.T)
 
     return output + delta
-
+s
 def controller(moduel, input, output):
-    global seq_len, dirty, handle_q, handle_v, q_results, v_results
+    global current_input_id, dirty, handle_q, handle_v, q_results, v_results
     current_len = input[0].shape[1]
     
     # 1. 리셋 로직 (새로운 샘플 시작 시)
-    if dirty == 0 or current_len < seq_len:
+    if dirty == 0 or not torch.equal(current_input_id, input[0][0]):
         if handle_q: handle_q.remove()
         if handle_v: handle_v.remove()
+        current_input_id = input[0][0].clone()
         
         # 리스트 초기화
         q_results.clear()
@@ -131,8 +132,6 @@ def controller(moduel, input, output):
         )
         print(f"\n✅ Hooks swapped! Weights: {combined_weight.cpu().numpy().round(3)}")
         dirty = 2
-        
-    seq_len = current_len
 
     
 
