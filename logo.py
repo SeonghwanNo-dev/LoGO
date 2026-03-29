@@ -22,6 +22,7 @@ task_name = "arc_easy"
 current_input_id = None
 handle_q = None
 handle_v = None
+top_k = 2
 
 adapter_paths = ["lora_adapters_fine_tuned/6_1/amazon_polarity_Is_this_product_review_positive.json/adapter_model.safetensors",
                  "lora_adapters_fine_tuned/6_1/anli_r3:0.1.0.json/adapter_model.safetensors",
@@ -60,7 +61,7 @@ def apply_hook(module, input, output, weight, adapters, mode="q"):
 
 # 2. 통합 컨트롤러 및 적용 훅
 class LoGO_controller:
-    def __init__(self, adapters_list, scaling, device, dtype):
+    def __init__(self, adapters_list, top_k, scaling, device, dtype):
         self.scaling = scaling
         self.current_weights = torch.full((len(adapters_list),), 1.0 / len(adapters_list), device=device, dtype=dtype)
         self.device = device
@@ -71,7 +72,7 @@ class LoGO_controller:
             'va': torch.stack([a['va'] for a in adapters_list]).to(self.device, self.dtype),
             'vb': torch.stack([a['vb'] for a in adapters_list]).to(self.device, self.dtype)
         }
-
+        self.top_k = top_k
 
 
     def controller_pre_hook(self, module, args, kwargs):
@@ -100,7 +101,10 @@ class LoGO_controller:
                 
                 # L2 결합 및 정규화
                 combined = torch.sqrt(qw**2 + vw**2)
-                self.current_weights = combined / (combined.sum() + 1e-6)
+                top_values, top_indices = torch.topk(combined, k=self.top_k, dim=0)
+                k_masked_weights = torch.zeros_like(combined)
+                k_masked_weights.scatter_(0, top_indices, top_values)
+                self.current_weights = k_masked_weights / (k_masked_weights.sum() + 1e-6)
 
     # def controller_pre_hook(self, module, args, kwargs):
     #     print("\n" + "="*50)
@@ -169,7 +173,7 @@ for path in adapter_paths:
 
 
 # 4. 훅 등록
-controller = LoGO_controller(adapters_list=loaded_adapters, scaling=64/32, device = base_model.device, dtype=base_model.dtype)
+controller = LoGO_controller(adapters_list=loaded_adapters, top_k = top_k,scaling=64/32, device = base_model.device, dtype=base_model.dtype)
 
 attn_module = base_model.model.layers[target_layer_idx].self_attn
 q_proj = attn_module.q_proj
