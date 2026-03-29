@@ -17,12 +17,9 @@ from lm_eval.utils import make_table
 model_id = "meta-llama/Llama-3.1-8B-Instruct"
 target_layer_idx = 31
 num_adapters = 10
-q_results = []
-v_results = []
 loaded_adapters = []
 task_name = "arc_easy"
 current_input_id = None
-dirty = 0
 handle_q = None
 handle_v = None
 
@@ -40,30 +37,6 @@ adapter_paths = ["lora_adapters_fine_tuned/6_1/amazon_polarity_Is_this_product_r
 
 
 # 2. 훅 함수 정의
-def calculate_weight_hook(module, input, output, adapters, result_list, mode="q"):
-    x = input[0][:, -1:, :]
-    temp = []
-    alpha = 64
-    r = 32
-    scaling = alpha / r
-    
-    with torch.no_grad():
-        for i in range(len(adapters)):
-            # 어댑터에서 q 또는 v에 맞는 가중치 선택
-            a_key, b_key = (f'{mode}a', f'{mode}b')
-            a_w = adapters[i][a_key]
-            b_w = adapters[i][b_key]
-            
-            # LoRA 연산: (x @ A.T) @ B.T
-            delta = scaling * ((x @ a_w.T) @ b_w.T)
-            norm = torch.norm(delta)
-            temp.append(norm)
-        norms_tensor = torch.stack(temp)
-        weights = torch.softmax(norms_tensor, dim=0)
-        result_list.clear()
-        result_list.append(weights.cpu().numpy())
-    return output
-
 def apply_hook(module, input, output, weight, adapters, mode="q"):
     temp = []
     alpha = 64
@@ -80,60 +53,98 @@ def apply_hook(module, input, output, weight, adapters, mode="q"):
 
             # LoRA 연산: (x @ A.T) @ B.T
             delta += scaling * weight[i] * ((x @ a_w.T) @ b_w.T)
+    
+    print(f"✅ Hooks swapped! Weights: {combined_weight.cpu().numpy().round(3)}")
 
     return output + delta
-s
-def controller(moduel, input, output):
-    global current_input_id, dirty, handle_q, handle_v, q_results, v_results
-    current_len = input[0].shape[1]
-    
-    # 1. 리셋 로직 (새로운 샘플 시작 시)
-    if dirty == 0 or not torch.equal(current_input_id, input[0][0]):
-        if handle_q: handle_q.remove()
-        if handle_v: handle_v.remove()
-        current_input_id = input[0][0].clone()
+
+# 2. 통합 컨트롤러 및 적용 훅
+class LoGO_controller:
+    def __init__(self, adapters_list, scaling, device, dtype):
+        self.scaling = scaling
+        self.current_weights = torch.full((len(adapters_list),), 1.0 / len(adapters_list), device=device, dtype=dtype)
+        self.device = device
+        self.dtype = dtype
+        self.adapters = {
+            'qa': torch.stack([a['qa'] for a in adapters_list]).to(self.device, self.dtype),
+            'qb': torch.stack([a['qb'] for a in adapters_list]).to(self.device, self.dtype),
+            'va': torch.stack([a['va'] for a in adapters_list]).to(self.device, self.dtype),
+            'vb': torch.stack([a['vb'] for a in adapters_list]).to(self.device, self.dtype)
+        }
+
+
+
+    def controller_pre_hook(self, module, args, kwargs):
+        x = kwargs.get('hidden_states')
         
-        # 리스트 초기화
-        q_results.clear()
-        v_results.clear()
+        seq_len = x.size(1)
+        if seq_len > 1:
+            # print("새로운 input 탐지, weight 재조정")
+            # Attention 블록 시작 시 1회 실행
+            x_last = x[:, -1:, :] # [batch, 1, d] - 마지막 토큰 기준
+            
+            with torch.no_grad():
+                # 벡터화된 LoRA 연산 (루프 없음)
+                # (x @ A.T) @ B.T 연산을 배치로 처리
+                # x: [1, 1, d], A: [10, r, d], B: [10, d, r]
+                
+                # Q 기여도 계산
+                q_delta = (x_last @ self.adapters['qa'].transpose(1, 2)) @ self.adapters['qb'].transpose(1, 2)
+                q_norms = torch.norm(q_delta * self.scaling, dim=-1).squeeze() # [10]
+                qw = torch.softmax(q_norms, dim=0)
+                
+                # V 기여도 계산
+                v_delta = (x_last @ self.adapters['va'].transpose(1, 2)) @ self.adapters['vb'].transpose(1, 2)
+                v_norms = torch.norm(v_delta * self.scaling, dim=-1).squeeze() # [10]
+                vw = torch.softmax(v_norms, dim=0)
+                
+                # L2 결합 및 정규화
+                combined = torch.sqrt(qw**2 + vw**2)
+                self.current_weights = combined / (combined.sum() + 1e-6)
 
-        q_module = base_model.model.layers[target_layer_idx].self_attn.q_proj
-        v_module = base_model.model.layers[target_layer_idx].self_attn.v_proj
-
-        handle_q = q_module.register_forward_hook(
-            partial(calculate_weight_hook, adapters=loaded_adapters, result_list=q_results, mode="q")
-        )
-        handle_v = v_module.register_forward_hook(
-            partial(calculate_weight_hook, adapters=loaded_adapters, result_list=v_results, mode="v")
-        )
-        dirty = 1
+    # def controller_pre_hook(self, module, args, kwargs):
+    #     print("\n" + "="*50)
+    #     print("Hook Triggered!")
+    #     print(f"1. Args Type: {type(args)}")
+    #     print(f"2. Args Length: {len(args)}")
         
-    # 2. 적용 로직 (분석 데이터가 존재할 때)
-    elif dirty == 1 and len(q_results) > 0:
-        handle_q.remove()
-        handle_v.remove()
+    #     for i, val in enumerate(args):
+    #         if torch.is_tensor(val):
+    #             print(f"   - args[{i}] is Tensor: {val.shape}")
+    #         else:
+    #             print(f"   - args[{i}] is {type(val)}")
+    #             if isinstance(val, (list, tuple)) and len(val) > 0:
+    #                 print(f"     -> First element of args[{i}] is: {type(val[0])}")
 
-        # ✅ 중요: 장치(Device) 및 타입(Dtype) 일치
-        qw = torch.tensor(q_results[0]).to(base_model.device, dtype=base_model.dtype)
-        vw = torch.tensor(v_results[0]).to(base_model.device, dtype=base_model.dtype)
+    #     print(f"3. Kwargs Keys: {list(kwargs.keys())}")
+    #     for k, v in kwargs.items():
+    #         if torch.is_tensor(v):
+    #             print(f"   - kwargs['{k}'] is Tensor: {v.shape}")
+    #     print("="*50 + "\n")
         
-        # L2 Norm 기반 결합
-        combined_weight = torch.sqrt(qw**2 + vw**2)
-        combined_weight = combined_weight / combined_weight.sum()
+    #     # 에러 방지를 위해 일단 여기서 리턴 (임시)
+    #     return
 
-        q_module = base_model.model.layers[target_layer_idx].self_attn.q_proj
-        v_module = base_model.model.layers[target_layer_idx].self_attn.v_proj
+    def apply_adapter_hook(self, module, input, output, mode='q'):
+        # Q 또는 V 프로젝션 후 실행
+        x = input[0] # [batch, seq, d]
+        w = self.current_weights.view(-1, 1, 1) # [10, 1, 1]
+        
+        with torch.no_grad():
+            # 모든 어댑터의 델타를 한 번에 계산 후 가중합
+            a_w = self.adapters[f'{mode}a']
+            b_w = self.adapters[f'{mode}b']
+            
+            # 배치 행렬 곱을 이용해 10개 어댑터 결과 동시 계산
+            # (batch, seq, d) @ (10, d, r) -> (10, batch, seq, r)
+            deltas = (x @ a_w.transpose(1, 2)) @ b_w.transpose(1, 2)
+            final_delta = (deltas * w * self.scaling).sum(dim=0)
+            
+        return output + final_delta
 
-        handle_q = q_module.register_forward_hook(
-            partial(apply_hook, adapters=loaded_adapters, weight=combined_weight, mode="q")
-        )
-        handle_v = v_module.register_forward_hook(
-            partial(apply_hook, adapters=loaded_adapters, weight=combined_weight, mode="v")
-        )
-        print(f"\n✅ Hooks swapped! Weights: {combined_weight.cpu().numpy().round(3)}")
-        dirty = 2
 
-    
+
+
 
 # 3. 가중치 로드 및 어댑터 리스트 생성
 q_lora_a_key = f"base_model.model.model.layers.{target_layer_idx}.self_attn.q_proj.lora_A.weight"
@@ -158,18 +169,31 @@ for path in adapter_paths:
 
 
 # 4. 훅 등록
-q_module = base_model.model.layers[target_layer_idx].self_attn.q_proj
-handle_controller = q_module.register_forward_hook(
-    partial(controller)
-)
+controller = LoGO_controller(adapters_list=loaded_adapters, scaling=64/32, device = base_model.device, dtype=base_model.dtype)
+
+attn_module = base_model.model.layers[target_layer_idx].self_attn
+q_proj = attn_module.q_proj
+v_proj = attn_module.v_proj
+
+attn_module.register_forward_pre_hook(controller.controller_pre_hook, with_kwargs=True)
+q_proj.register_forward_hook(partial(controller.apply_adapter_hook, mode='q'))
+v_proj.register_forward_hook(partial(controller.apply_adapter_hook, mode='v'))
+
+
 
 from lm_eval.models.huggingface import HFLM
 lm_obj = HFLM(pretrained=base_model, tokenizer=tokenizer) # 이미 훅이 걸린 모델을 래핑
 
 results = lm_eval.simple_evaluate(
     model=lm_obj,
+    # model="hf",
+    # model_args={
+    #     "pretrained": "meta-llama/Llama-3.1-8B-Instruct",
+    #     "peft": "./lora_adapters_fine_tuned/6_1/cos_e_v1.11_aligned_with_common_sense.json", # Path to your LoRA adapter
+    #     "device": "cuda:0",
+    # },
     tasks= task_name,           # Evaluation tasks (list format)
-    num_fewshot=5,                # Number of few-shot examples (0-5 is standard)
+    num_fewshot=0,                # Number of few-shot examples (0-5 is standard)
     batch_size=1,                 # Adjust based on your GPU VRAM
     # limit=10                    # Uncomment this line for a quick "sanity check" (only 10 samples)
 )
@@ -184,6 +208,14 @@ if task_name in results["results"]:
     # Accessing the 'acc,none' metric (standard accuracy)
     score = results["results"][task_name].get("acc,none") or results["results"][task_name].get("acc")
     print(f"✨ {task_name.upper()} Final Score: {score:.4f}")
+    # task_results = results["results"][task_name]
+    # score = task_results.get("exact_match,none") or \
+    #         task_results.get("exact_match") or \
+    #         task_results.get("mean_3class_f1,none")
+    # if score is not None:
+    #     print(f"✨ {task_name.upper()} Final Score: {score:.4f}")
+    # else:
+    #     print(f"✨ {task_name.upper()} Results: {task_results}")
 
 # Optional: Clean up GPU memory after evaluation
 gc.collect()
