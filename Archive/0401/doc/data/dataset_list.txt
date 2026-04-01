@@ -1,0 +1,20 @@
+adversarial_qa_dbert_*, adversarial_qa_dbidaf_*, adversarial_qa_droberta_*, ai2_arc_ARC-Challenge, ai2_arc_ARC-Easy, bool_q,
+coqa, cosmos_qa, drop, duorc_ParaphraseRC_*, duorc_SelfRC_*, hotpotqa, kilt_tasks_hotpotqa_*, natural_questions_open, openbookqa,
+qasc_*, quac, quail_*, quarel_*, quartz_*, quoref_*, race_high_*, race_middle_*, ropes_*, sciq_*, squad_v1.1, squad_v2.0,
+trivia_qa_rc, unified_qa_science_inst, web_questions_*, wiki_hop_original_*, wiki_qa_*
+
+anli_r1, anli_r2, anli_r3, glue_mnli, glue_rte, glue_wnli, snli, super_glue_cb, super_glue_copa, super_glue_multirc, super_glue_record,
+super_glue_wic, super_glue_wsc.fixed
+
+ag_news_subset, amazon_polarity_*, app_reviews_*, dbpedia_14_*, glue_cola, glue_mrpc, glue_qqp, glue_sst2,
+imdb_reviews_plain_text, opinion_abstracts_idebate, opinion_abstracts_rotten_tomatoes, sentiment140, trec, yelp_polarity_reviews
+
+cos_e_v1.11_*, hellaswag, lambada, piqa, social_i_qa_*, story_cloze_2016, winogrande, wiqa_*
+
+aeslc, dream_*, gem_wiki_lingua_english_en, samsum, gigaword
+
+gem_common_gen, gem_dart, gem_e2e_nlg, gem_web_nlg_en, wiki_bio_*
+
+para_crawl_enes, wmt14_translate_fr-en, wmt16_translate_cs-en, wmt16_translate_de-en, wmt16_translate_fi-en, wmt16_translate_ro-en, wmt16_translate_ru-en, wmt16_translate_tr-en
+
+definite_pronoun_resolution, fix_punct, huggingface, math_dataset_algebra__linear_1d, opinion_abstracts_*, true_case, word_segment
