@@ -60,20 +60,22 @@ def parse_and_plot(file_path):
         
         # Task와 Top_K 정보 추출
         task_info = re.search(r"Task:\s*(\S+).*?Top_?K:\s*(\w+)", block, re.IGNORECASE)
+        
         if task_info:
             task_name = task_info.group(1)
             top_k_value = task_info.group(2)
+        print(top_k_value)
             
         try:
             top_k = int(top_k_value)
         except ValueError:
             top_k = top_k_value
             
-            score = get_score_from_block(block, task_name)
-            
-            if score is not None:
-                results[task_name]["top_k"].append(top_k)
-                results[task_name]["score"].append(score)
+        score = get_score_from_block(block, task_name)
+        
+        if score is not None:
+            results[task_name]["top_k"].append(top_k)
+            results[task_name]["score"].append(score)
 
     # 시각화 설정
     sns.set_theme(style="whitegrid")
@@ -81,10 +83,11 @@ def parse_and_plot(file_path):
     for task_name, data in results.items():
         if not data["top_k"]: continue
         
-        df = pd.DataFrame(data).sort_values("top_k")
-        df['top_k_str'] = df['top_k'].astype(str) # 범주형 변환
-        
+        df = pd.DataFrame(data)
+        df = df.sort_values(by="top_k", key=lambda x: pd.to_numeric(x, errors='coerce'))
+        df['top_k_str'] = df['top_k'].astype(str)
         plt.figure(figsize=(9, 6))
+        
         
         # 바 그래프
         sns.barplot(data=df, x='top_k_str', y='score', alpha=0.3, color='#3498db')
