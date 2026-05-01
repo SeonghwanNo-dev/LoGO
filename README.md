@@ -10,7 +10,7 @@ This repository is an implementation of the research paper **"LoRA on the Go: In
 
 ---
 
-## Project Structure
+## ⚙️ Project Structure
 
 The project is organized into three primary modules, each handling a distinct stage of the machine learning pipeline:
 
