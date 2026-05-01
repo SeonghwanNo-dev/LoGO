@@ -15,6 +15,7 @@ from tqdm import tqdm
 import pandas as pd
 import wandb
 import gc
+from train_config import AdapterTrainerConfig_2
 
 def compute_loss_func(outputs, labels, num_items_in_batch=None):
     logits = outputs.logits
@@ -244,36 +245,15 @@ def train(
     #     print("Accuracy:")
     #     for key in accuracy:
     #         print(f"{key}: {accuracy[key][0] / accuracy[key][1]}")
-        
-        
+         
 if __name__ == "__main__":
 
-    # # Dataset Loading and Validation
-    # dataset = load_from_disk("./dataset_2/local_flan_v2/adversarial_qa_dbert_answer_the_following_q.json")
-    # print(dataset)
-    # print("-" * 50)
-    # for i in range(3):
-    #     print(f"Sample {i} Input: {dataset['train'][i]['inputs']}")
-    #     print(f"Sample {i} Target: {dataset['train'][i]['targets']}")
-    #     print("-" * 50)
-        
-        
-
-    base_path = "./dataset_2/local_flan_v2_1/"
-    task_folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
-
-    done_path_1 = "./lora_adapters_fine_tuned/5/"
-    done_task_folders_1 = [f for f in os.listdir(done_path_1) if os.path.isdir(os.path.join(done_path_1, f))]
-    done_path_2 = "./lora_adapters_fine_tuned/6_1/"
-    done_task_folders_2 = [f for f in os.listdir(done_path_2) if os.path.isdir(os.path.join(done_path_2, f))]
-    
-    done_task_folders = done_task_folders_1 + done_task_folders_2
-
-    print(done_task_folders)
+    config = AdapterTrainerConfig_1()
+    task_folders = [f for f in os.listdir(config.base_path) if os.path.isdir(os.path.join(config.base_path, f))]
 
     for task in task_folders:
         
-        full_path = os.path.join(base_path, task)
+        full_path = os.path.join(config.base_path, task)
         
         if task in done_task_folders:
             print(f"{task} is done")
@@ -282,19 +262,19 @@ if __name__ == "__main__":
             print(f"Current Task: {task}")
             print("="*50 + "\n")
             train(
-                base_model = "meta-llama/Llama-3.1-8B-Instruct",
-                model_type = "LLaMA",
+                base_model = config.base_model,
+                model_type = config.model_type,
                 data_path = full_path,
-                output_dir = f"./lora_adapters_fine_tuned/6_1/{task}",
-                adapter_name = "lora",
-                wandb_project = "LoGo Adapters_5",
+                output_dir = f"{config.output_dir}/{task}",
+                adapter_name = config.adapter_name,
+                wandb_project = config.wandb_project,
                 wandb_run_name = task,
-                wandb_watch = "false",  # options: false | gradients | all
-                wandb_log_model = "false",  # options: false | true
-                resume_from_checkpoint = None,  # either training checkpoint or final adapter
-                # num_epochs = 1,
-                eval_step = 50,
-                save_step = 50,
+                wandb_watch = config.wandb_watch,  # options: false | gradients | all
+                wandb_log_model = config.wandb_log_model,  # options: false | true
+                resume_from_checkpoint = config.resume_from_checkpoint,  # either training checkpoint or final adapter
+                # num_epochs = config.num_epochs,
+                eval_step = config.eval_step,
+                save_step = config.save_step,
             )
 
         # GPU Memory Cleanup

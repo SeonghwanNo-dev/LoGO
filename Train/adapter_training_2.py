@@ -250,7 +250,7 @@ def train(
         
 if __name__ == "__main__":
 
-    config = AdapterTrainerConfig()
+    config = AdapterTrainerConfig_2()
     task_folders = [f for f in os.listdir(config.base_path) if os.path.isdir(os.path.join(config.base_path, f))]
 
     for task in task_folders:
