@@ -1,6 +1,6 @@
 # Inference Module Guide
 
-This module manages the inference process for the **LoGO** model. It has been refactored to use a centralized configuration system for better modularity and ease of use on NVIDIA Jetson devices.
+This module manages the inference process for the **LoGO** model.
 
 ---
 
