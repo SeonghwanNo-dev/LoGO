@@ -149,39 +149,38 @@ v_proj.register_forward_hook(partial(controller.apply_adapter_hook, mode='v'))
 from lm_eval.models.huggingface import HFLM
 lm_obj = HFLM(pretrained=base_model, tokenizer=tokenizer) # 이미 훅이 걸린 모델을 래핑
 
-results = lm_eval.simple_evaluate(
-    model=lm_obj,
-    # model="hf",
-    # model_args={
-    #     "pretrained": "meta-llama/Llama-3.1-8B-Instruct",
-    #     "peft": "./lora_adapters_fine_tuned/6_1/cos_e_v1.11_aligned_with_common_sense.json", # Path to your LoRA adapter
-    #     "device": "cuda:0",
-    # },
-    tasks= config.task_name,           # Evaluation tasks (list format)
-    num_fewshot=0,                # Number of few-shot examples (0-5 is standard)
-    batch_size=1,                 # Adjust based on your GPU VRAM
-    # limit=10                    # Uncomment this line for a quick "sanity check" (only 10 samples)
-)
+for i in [10,20]:
+    config.top_k=i
+    results = lm_eval.simple_evaluate(
+        model=lm_obj,
+        # model="hf",
+        # model_args={
+        #     "pretrained": "meta-llama/Llama-3.1-8B-Instruct",
+        #     "peft": "./lora_adapters_fine_tuned/6_1/cos_e_v1.11_aligned_with_common_sense.json", # Path to your LoRA adapter
+        #     "device": "cuda:0",
+        # },
+        tasks= config.task_name,           # Evaluation tasks (list format)
+        num_fewshot=0,                # Number of few-shot examples (0-5 is standard)
+        batch_size=1,                 # Adjust based on your GPU VRAM
+        # limit=10                    # Uncomment this line for a quick "sanity check" (only 10 samples)
+    )
 
-# 2. Output Results
-# Print the results in a formatted table as seen in the CLI version
-print(make_table(results))
+    # 2. Output Results
+    # Print the results in a formatted table as seen in the CLI version
+    table_results = make_table(results)
+    task_metrics = results["results"].get(task_name, {})
+    score = task_metrics.get("acc,none") or task_metrics.get("acc") or "N/A"
 
-# 3. Extract Specific Metrics
-# Example: Extracting the accuracy score for a specific task
-if config.task_name in results["results"]:
-    # Accessing the 'acc,none' metric (standard accuracy)
-    score = results["results"][config.task_name].get("acc,none") or results["results"][task_name].get("acc")
-    print(f"✨ {config.task_name.upper()} Final Score: {score:.4f}")
-    # task_results = results["results"][config.task_name]
-    # score = task_results.get("exact_match,none") or \
-    #         task_results.get("exact_match") or \
-    #         task_results.get("mean_3class_f1,none")
-    # if score is not None:
-    #     print(f"✨ {config.task_name.upper()} Final Score: {score:.4f}")
-    # else:
-    #     print(f"✨ {config.task_name.upper()} Results: {task_results}")
+    with open(config.output_file, "a", encoding="utf-8") as f:
+        f.write(f"\n{'='*60}\n")
+        f.write(f"Task: {config.task_name} | Top_K: {config.top_k} | Batch Size: 1\n")
+        f.write(f"Final Score (Acc): {score}\n")
+        f.write(f"{'-'*60}\n")
+        f.write(table_results)
+        f.write(f"\n{'='*60}\n")
 
-# Optional: Clean up GPU memory after evaluation
-gc.collect()
-torch.cuda.empty_cache()
+    print(f"✅ {config.task_name} Score: {score} - Saved to {config.output_file}")
+
+    # Optional: Clean up GPU memory after evaluation
+    gc.collect()
+    torch.cuda.empty_cache()
