@@ -58,7 +58,8 @@ def monitor_and_upload_all(config):
                 shutil.make_archive(zip_base_name, 'zip', temp_batch_dir)
 
                 print(f"📤 Uploading to Google Drive: {zip_filename}")
-                google_upload.upload_to_drive(zip_filename, GOOGLE_DRIVE_FOLDER_ID)
+                config.file_name = zip_filename
+                google_upload.upload_to_drive(config)
 
                 # Clean up: Remove temporary directory and zip file upon success
                 shutil.rmtree(temp_batch_dir)
