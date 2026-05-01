@@ -6,7 +6,7 @@ This repository is an implementation of the research paper **"LoRA on the Go: In
 ## 🌟 Key Research Focus
 *   **Train-free Adaptation**: Focuses on a train-free approach for dynamic adapter selection, making it highly efficient for resource-constrained edge devices.
 *   **Activation-based Selection**: Leverages intermediate activations to determine the most relevant LoRA adapters for each specific instance.
-*   **Technical Depth**: Extensively utilizes **PyTorch's hook mechanism** to intercept and manipulate model activations, which has been a significant milestone in my low-level system optimization journey.
+*   **Technical Depth**: Extensively utilizes **PyTorch's hook mechanism** to intercept and manipulate model activations.
 
 ---
 
