@@ -1,33 +1,27 @@
 import os
 import time
 import shutil
-import google_upload # Requires google_upload.py and token.json in the same directory
+import google_upload
+from train_config improt ObserverConfig_2
 
-# [Configuration]
-GOOGLE_DRIVE_FOLDER_ID = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw'
-WATCH_PATH = "./6_2/"
-BATCH_SIZE = 5
-# Minimum time (seconds) after last modification to consider a folder "stable" (e.g., 300s = 5m)
-STABLE_TIME_THRESHOLD = 300 
-
-def monitor_and_upload_all():
-    print(f"🚀 Monitoring {WATCH_PATH}... (Collecting {BATCH_SIZE} stable folders for compression)")
+def monitor_and_upload_all(config):
+    print(f"🚀 Monitoring {config.watch_dir}... (Collecting {config.batch_size} stable folders for compression)")
     
     # Initialize batch count
     count = 1
     
     while True:
         # Ensure watch path exists
-        if not os.path.exists(WATCH_PATH):
-            os.makedirs(WATCH_PATH, exist_ok=True)
+        if not os.path.exists(config.watch_dir):
+            os.makedirs(config.watch_dir, exist_ok=True)
 
         # 1. Check all entries in the watch path
-        all_entries = os.listdir(WATCH_PATH)
+        all_entries = os.listdir(config.watch_dir)
         ready_folders = []
 
         now = time.time()
         for entry in all_entries:
-            full_path = os.path.join(WATCH_PATH, entry)
+            full_path = os.path.join(config.watch_dir, entry)
             
             # Verify if the entry is a directory
             if os.path.isdir(full_path):
@@ -35,28 +29,28 @@ def monitor_and_upload_all():
                 mtime = os.path.getmtime(full_path)
                 
                 # Consider it "complete" only if it hasn't been modified for the threshold time
-                if (now - mtime) > STABLE_TIME_THRESHOLD:
+                if (now - mtime) > config.stable_time_threshold:
                     ready_folders.append(entry)
         
         ready_folders.sort()
         print(f"👀 Ready folders: {len(ready_folders)} / Total: {len(all_entries)}")
 
         # 2. Compress and upload when batch size is reached
-        if len(ready_folders) >= BATCH_SIZE:
-            targets = ready_folders[:BATCH_SIZE]
+        if len(ready_folders) >= config.batch_size:
+            targets = ready_folders[:config.batch_size]
             timestamp = time.strftime("%m%d_%H%M%S")
             
             zip_base_name = f"backup_6_2_{count}"
             zip_filename = f"{zip_base_name}.zip"
             temp_batch_dir = f"./temp_batch_{timestamp}_{count}"
             
-            print(f"📦 [Session {count}] Starting compression of {BATCH_SIZE} folders...")
+            print(f"📦 [Session {count}] Starting compression of {config.batch_size} folders...")
             os.makedirs(temp_batch_dir, exist_ok=True)
 
             try:
                 # Move target folders to the temporary working directory
                 for folder_name in targets:
-                    src = os.path.join(WATCH_PATH, folder_name)
+                    src = os.path.join(config.watch_dir, folder_name)
                     dst = os.path.join(temp_batch_dir, folder_name)
                     shutil.move(src, dst)
 
@@ -80,7 +74,7 @@ def monitor_and_upload_all():
                 # Rollback: Move folders back to the watch path if something fails
                 if os.path.exists(temp_batch_dir):
                     for folder in os.listdir(temp_batch_dir):
-                        shutil.move(os.path.join(temp_batch_dir, folder), os.path.join(WATCH_PATH, folder))
+                        shutil.move(os.path.join(temp_batch_dir, folder), os.path.join(config.watch_dir, folder))
                     shutil.rmtree(temp_batch_dir)
                 if os.path.exists(zip_filename):
                     os.remove(zip_filename)
@@ -89,4 +83,5 @@ def monitor_and_upload_all():
         time.sleep(60)
 
 if __name__ == "__main__":
+    config = ObserverConfig_2()
     monitor_and_upload_all()
