@@ -15,7 +15,7 @@ from tqdm import tqdm
 import pandas as pd
 import wandb
 import gc
-from train_config import AdapterTrainerConfig
+from train_config import AdapterTrainerConfig_2
 
 
 def compute_loss_func(outputs, labels, num_items_in_batch=None):
