@@ -4,7 +4,7 @@ class AdapterTrainerConfig_1(object):
     self.base_model = "meta-llama/Llama-3.1-8B-Instruct",
     self.model_type = "LLaMA",
     self.data_path = full_path,
-    self.output_dir = "./lora_adapters_fine_tuned/6_2",
+    self.output_dir = "./lora_adapters_fine_tuned/6_1",
     self.adapter_name = "lora",
     self.wandb_project = "LoGo Adapters_5",
     self.wandb_run_name = task,
@@ -18,10 +18,10 @@ class AdapterTrainerConfig_1(object):
 class AdapterTrainerConfig_2(object):
   def __init__(self):
     self.base_path = "./Data/dataset_2/local_flan_v2_2"
+    self.output_dir = "./lora_adapters_fine_tuned/6_2",
     self.base_model = "meta-llama/Llama-3.1-8B-Instruct",
     self.model_type = "LLaMA",
     self.data_path = full_path,
-    self.output_dir = "./lora_adapters_fine_tuned/6_2",
     self.adapter_name = "lora",
     self.wandb_project = "LoGo Adapters_5",
     self.wandb_run_name = task,
@@ -51,5 +51,5 @@ class ObserverConfig_2(object):
     def __init__(self):
         self.google_drive_folder_id = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw'
         self.watch_dir = "./6_2/"
-        self.batch_size = 5
+        self.batch_size = 
         self.stable_time_threshold = 300 
