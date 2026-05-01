@@ -31,3 +31,17 @@ class AdapterTrainerConfig_2(object):
     self.num_epochs = 10,
     self.eval_step = 50,
     self.save_step = 50,
+
+
+class GoogleUploadConfig(object):
+    def __init__(self):
+        self.token_file= 'token.json'                        # Name of the authentication token file
+        self.cred_file = 'credentials.json'                  # Name of the credential file from Google Console
+        self.target_file = './backup_6_3_10.zip'             # File to be uploaded
+        self.folder_id = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw' # Google Drive Folder ID
+
+class ObserverConfig_1(object):
+    def __init__(self):
+
+class ObserverConfig_2(object):
+    def __init__(self):

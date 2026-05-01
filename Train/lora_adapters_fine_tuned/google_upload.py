@@ -6,22 +6,16 @@ from googleapiclient.http import MediaFileUpload
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.errors import HttpError
+from train_config improt GoogleUploadConfig
 
 
-# 1. Path and Configuration Variables
-TOKEN_FILE = 'token.json'              # Name of the authentication token file
-CRED_FILE = 'credentials.json'         # Name of the credential file from Google Console
-TARGET_FILE = './backup_6_3_10.zip'    # File to be uploaded
-FOLDER_ID = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw' # Google Drive Folder ID
-
-
-def get_credentials():
+def get_credentials(config):
     creds = None
     
     # 1. Check if the token.json file already exists
-    if os.path.exists(TOKEN_FILE):
+    if os.path.exists(config.token_file):
         # Important: Use the Credentials function instead of pickle to avoid '{' errors.
-        creds = Credentials.from_authorized_user_file(TOKEN_FILE)
+        creds = Credentials.from_authorized_user_file(config.token_file)
     
     # 2. Handle cases where credentials are missing or invalid
     if not creds or not creds.valid:
@@ -34,30 +28,30 @@ def get_credentials():
             return None
             
         # Save the refreshed token back to the file
-        with open(TOKEN_FILE, 'w') as token:
+        with open(config.token_file, 'w') as token:
             token.write(creds.to_json())
             
     return creds
 
-def upload_to_drive(file_path, folder_id):
+def upload_to_drive(config):
     try:
-        creds = get_credentials()
+        creds = get_credentials(config)
         if not creds: return
 
         service = build('drive', 'v3', credentials=creds)
         
         file_metadata = {
-            'name': os.path.basename(file_path),
-            'parents': [folder_id]
+            'name': os.path.basename(config.file_path),
+            'parents': [config.folder_id]
         }
 
         # Transfer logic (Retry up to 5 times)
         for attempt in range(5):
             try:
-                media = MediaFileUpload(file_path, resumable=True, chunksize=5*1024*1024)
+                media = MediaFileUpload(config.file_path, resumable=True, chunksize=5*1024*1024)
                 request = service.files().create(body=file_metadata, media_body=media, fields='id')
                 
-                print(f"🚀 Uploading {os.path.basename(file_path)}... (Attempt {attempt+1})")
+                print(f"🚀 Uploading {os.path.basename(config.file_path)}... (Attempt {attempt+1})")
                 
                 response = None
                 while response is None:
@@ -79,4 +73,5 @@ def upload_to_drive(file_path, folder_id):
         print(f"❌ Error occurred: {e}")
 
 if __name__ == "__main__":
-    upload_to_drive(file_path=TARGET_FILE, folder_id=FOLDER_ID)
+    config = GoogleUploadConfig()
+    upload_to_drive(config)
