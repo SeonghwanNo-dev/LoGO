@@ -39,49 +39,56 @@ class LoGO_controller:
     def controller_pre_hook(self, module, args, kwargs):
         x = kwargs.get('hidden_states')
         
-        seq_len = x.size(1)
+        batch_size = x.size(0)  # B
+        seq_len = x.size(1)     # S
         if seq_len > 1:
             # print("새로운 input 탐지, weight 재조정")
             # Attention 블록 시작 시 1회 실행
-            x_last = x[:, -1:, :] # [batch, 1, d] - 마지막 토큰 기준
+            x_last = x[:, -1:, :] # [B, 1, D] - 마지막 토큰 기준
+            print(f"pre_hook, x_last.shape={x_last.shape}")
             
             with torch.no_grad():
                 # 벡터화된 LoRA 연산 (루프 없음)
                 # (x @ A.T) @ B.T 연산을 배치로 처리
-                # x: [1, 1, d], A: [10, r, d], B: [10, d, r]
-                
+                # x: [B, 1, D], A: [N, R, D], B: [N, D, R]
+
                 # Q 기여도 계산
-                q_delta = (x_last @ self.adapters['qa'].transpose(1, 2)) @ self.adapters['qb'].transpose(1, 2)
-                q_norms = torch.norm(q_delta * self.scaling, dim=-1).squeeze() # [10]
-                qw = torch.softmax(q_norms, dim=0)
+                # (1, B, 1, D) @ (N, 1, D, R) @ (N, 1, R, D) -> (N, B, 1, R) @ (N, 1, R, D) -> (N, B, 1, D)
+                q_delta = (x_last.unsqueeze(0) @ self.adapters['qa'].transpose(1, 2)) @ self.adapters['qb'].transpose(1, 2)
+                q_norms = torch.norm(q_delta * self.scaling, dim=-1)    # [N, B, 1]
+                qw = torch.softmax(q_norms.view(-1, batch_size), dim=0) # [N, B]
+        
                 
                 # V 기여도 계산
-                v_delta = (x_last @ self.adapters['va'].transpose(1, 2)) @ self.adapters['vb'].transpose(1, 2)
-                v_norms = torch.norm(v_delta * self.scaling, dim=-1).squeeze() # [10]
-                vw = torch.softmax(v_norms, dim=0)
+                v_delta = (x_last.unsqueeze(0) @ self.adapters['va'].transpose(1, 2)) @ self.adapters['vb'].transpose(1, 2)
+                v_norms = torch.norm(v_delta * self.scaling, dim=-1)
+                vw = torch.softmax(v_norms.view(-1, batch_size), dim=0) # [N, B]
                 
                 # L2 결합 및 정규화
-                combined = torch.sqrt(qw**2 + vw**2)
-                top_values, top_indices = torch.topk(combined, k=self.top_k, dim=0)
-                k_masked_weights = torch.zeros_like(combined)
+                combined = torch.sqrt(qw**2 + vw**2)    # [N, B]
+                top_values, top_indices = torch.topk(combined, k=self.top_k, dim=0) # [K, B]
+                k_masked_weights = torch.zeros_like(combined)   # [N, B]
                 k_masked_weights.scatter_(0, top_indices, top_values)
-                self.current_weights = k_masked_weights / (k_masked_weights.sum() + 1e-6)
+                self.current_weights = (k_masked_weights / (k_masked_weights.sum() + 1e-6)).view(-1, batch_size, 1, 1) # [N, B, 1, 1]
 
     def apply_adapter_hook(self, module, input, output, mode='q'):
         # Q 또는 V 프로젝션 후 실행
-        x = input[0] # [batch, seq, d]
-        w = self.current_weights.view(-1, 1, 1) # [10, 1, 1]
+        x = input[0] # [B, S, D]
         
         with torch.no_grad():
             # 모든 어댑터의 델타를 한 번에 계산 후 가중합
-            a_w = self.adapters[f'{mode}a']
-            b_w = self.adapters[f'{mode}b']
+            a_w = self.adapters[f'{mode}a'].transpose(1, 2).unsqueeze(1) # [N, 1, D, R]
+            b_w = self.adapters[f'{mode}b'].transpose(1, 2).unsqueeze(1) # [N, 1, R, D]
+            x = x.unsqueeze(0)
             
-            # 배치 행렬 곱을 이용해 10개 어댑터 결과 동시 계산
-            # 차원을 맞추기 위해 broadcasting 한다.  
-            # (batch, seq, d) @ (k, d, r) -> (1, batch, seq, d) @ (k, 1, d, r) -> (k, batch, seq, r)
-            deltas = (x @ a_w.transpose(1, 2)) @ b_w.transpose(1, 2)
-            final_delta = (deltas * w * self.scaling).sum(dim=0)
+            # 뒤의 두 차원{(S, D), (D, R)}만 계산하고 앞의 두 차원(N, B)은 배치로 본다.
+            # (1, B, S, D) @ (N, 1, D, R) -> (N, B, S, R)
+            # (N, B, S, R) @ (N, 1, R, D) -> (N, B, S, D)
+            deltas = (x @ a_w) @ b_w
+            print(f"DEBUG: mode={mode}, x.shape={x.shape}, deltas.shape={deltas.shape}")
+            final_delta = (deltas * self.current_weights * self.scaling).sum(dim=0) # [B, S, D]
+            print(f"DEBUG: final_delta.shape={final_delta.shape}")
+            
             
         return output + final_delta
 
@@ -142,7 +149,7 @@ for i in [10,20]:
         # },
         tasks= config.task_name,           # Evaluation tasks (list format)
         num_fewshot=0,                # Number of few-shot examples (0-5 is standard)
-        batch_size=1,                 # Adjust based on your GPU VRAM
+        batch_size=4,                 # Adjust based on your GPU VRAM
         # limit=10                    # Uncomment this line for a quick "sanity check" (only 10 samples)
     )
 
