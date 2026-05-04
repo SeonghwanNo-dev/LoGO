@@ -19,27 +19,6 @@ handle_q = None
 handle_v = None
 
 
-def apply_hook(module, input, output, weight, adapters, mode="q"):
-    temp = []
-    alpha = 64
-    r = 32
-    scaling = alpha / r
-    x = input[0]
-    
-    delta = 0
-    with torch.no_grad():
-        for i in range(len(adapters)):
-            a_key, b_key = (f'{mode}a', f'{mode}b')
-            a_w = adapters[i][a_key]
-            b_w = adapters[i][b_key]
-
-            # LoRA 연산: (x @ A.T) @ B.T
-            delta += scaling * weight[i] * ((x @ a_w.T) @ b_w.T)
-    
-    print(f"✅ Hooks swapped! Weights: {combined_weight.cpu().numpy().round(3)}")
-
-    return output + delta
-
 # 2. 통합 컨트롤러 및 적용 훅
 class LoGO_controller:
     def __init__(self, adapters_list, top_k, scaling, device, dtype):
@@ -48,7 +27,8 @@ class LoGO_controller:
         self.device = device
         self.dtype = dtype
         self.adapters = {
-            'qa': torch.stack([a['qa'] for a in adapters_list]).to(self.device, self.dtype),
+            # torch.stack은 새로운 0번 차원을 만들어 쌓는다.
+            'qa': torch.stack([a['qa'] for a in adapters_list]).to(self.device, self.dtype),   
             'qb': torch.stack([a['qb'] for a in adapters_list]).to(self.device, self.dtype),
             'va': torch.stack([a['va'] for a in adapters_list]).to(self.device, self.dtype),
             'vb': torch.stack([a['vb'] for a in adapters_list]).to(self.device, self.dtype)
@@ -98,7 +78,8 @@ class LoGO_controller:
             b_w = self.adapters[f'{mode}b']
             
             # 배치 행렬 곱을 이용해 10개 어댑터 결과 동시 계산
-            # (batch, seq, d) @ (10, d, r) -> (10, batch, seq, r)
+            # 차원을 맞추기 위해 broadcasting 한다.  
+            # (batch, seq, d) @ (k, d, r) -> (1, batch, seq, d) @ (k, 1, d, r) -> (k, batch, seq, r)
             deltas = (x @ a_w.transpose(1, 2)) @ b_w.transpose(1, 2)
             final_delta = (deltas * w * self.scaling).sum(dim=0)
             
