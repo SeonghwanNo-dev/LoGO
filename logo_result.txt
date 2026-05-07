@@ -1,0 +1,181 @@
+
+============================================================
+Task: anli_r1 | Top_K: 10 | Batch Size: 4
+Final Score (Acc): 0.513
+------------------------------------------------------------
+|                          Tasks                           |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|----------------------------------------------------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|anli_r1                                                   |      1|none  |     0|acc     |↑  |0.5130|±  |0.0158|
+|arc_challenge                                             |      1|none  |     0|acc     |↑  |0.4761|±  |0.0146|
+|                                                          |       |none  |     0|acc_norm|↑  |0.5009|±  |0.0146|
+|arc_easy                                                  |      1|none  |     0|acc     |↑  |0.7462|±  |0.0089|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7180|±  |0.0092|
+|hellaswag                                                 |      1|none  |     0|acc     |↑  |0.5726|±  |0.0049|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7494|±  |0.0043|
+|leaderboard_bbh                                           |       |none  |      |acc_norm|↑  |0.4810|±  |0.0062|
+| - leaderboard_bbh_boolean_expressions                    |      1|none  |     0|acc_norm|↑  |0.5480|±  |0.0315|
+| - leaderboard_bbh_causal_judgement                       |      1|none  |     0|acc_norm|↑  |0.5187|±  |0.0366|
+| - leaderboard_bbh_date_understanding                     |      1|none  |     0|acc_norm|↑  |0.4640|±  |0.0316|
+| - leaderboard_bbh_disambiguation_qa                      |      1|none  |     0|acc_norm|↑  |0.3120|±  |0.0294|
+| - leaderboard_bbh_formal_fallacies                       |      1|none  |     0|acc_norm|↑  |0.5360|±  |0.0316|
+| - leaderboard_bbh_geometric_shapes                       |      1|none  |     0|acc_norm|↑  |0.1680|±  |0.0237|
+| - leaderboard_bbh_hyperbaton                             |      1|none  |     0|acc_norm|↑  |0.7200|±  |0.0285|
+| - leaderboard_bbh_logical_deduction_five_objects         |      1|none  |     0|acc_norm|↑  |0.4080|±  |0.0311|
+| - leaderboard_bbh_logical_deduction_seven_objects        |      1|none  |     0|acc_norm|↑  |0.3440|±  |0.0301|
+| - leaderboard_bbh_logical_deduction_three_objects        |      1|none  |     0|acc_norm|↑  |0.5680|±  |0.0314|
+| - leaderboard_bbh_movie_recommendation                   |      1|none  |     0|acc_norm|↑  |0.4520|±  |0.0315|
+| - leaderboard_bbh_navigate                               |      1|none  |     0|acc_norm|↑  |0.4200|±  |0.0313|
+| - leaderboard_bbh_object_counting                        |      1|none  |     0|acc_norm|↑  |0.4640|±  |0.0316|
+| - leaderboard_bbh_penguins_in_a_table                    |      1|none  |     0|acc_norm|↑  |0.4589|±  |0.0414|
+| - leaderboard_bbh_reasoning_about_colored_objects        |      1|none  |     0|acc_norm|↑  |0.5720|±  |0.0314|
+| - leaderboard_bbh_ruin_names                             |      1|none  |     0|acc_norm|↑  |0.6840|±  |0.0295|
+| - leaderboard_bbh_salient_translation_error_detection    |      1|none  |     0|acc_norm|↑  |0.4920|±  |0.0317|
+| - leaderboard_bbh_snarks                                 |      1|none  |     0|acc_norm|↑  |0.7191|±  |0.0338|
+| - leaderboard_bbh_sports_understanding                   |      1|none  |     0|acc_norm|↑  |0.7280|±  |0.0282|
+| - leaderboard_bbh_temporal_sequences                     |      1|none  |     0|acc_norm|↑  |0.8360|±  |0.0235|
+| - leaderboard_bbh_tracking_shuffled_objects_five_objects |      1|none  |     0|acc_norm|↑  |0.2040|±  |0.0255|
+| - leaderboard_bbh_tracking_shuffled_objects_seven_objects|      1|none  |     0|acc_norm|↑  |0.1440|±  |0.0222|
+| - leaderboard_bbh_tracking_shuffled_objects_three_objects|      1|none  |     0|acc_norm|↑  |0.3640|±  |0.0305|
+| - leaderboard_bbh_web_of_lies                            |      1|none  |     0|acc_norm|↑  |0.4880|±  |0.0317|
+|piqa                                                      |      1|none  |     0|acc     |↑  |0.7753|±  |0.0097|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7769|±  |0.0097|
+
+============================================================
+
+============================================================
+Top_K: 10 | Batch Size: 1
+------------------------------------------------------------
+|                          Tasks                           |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|----------------------------------------------------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|anli_r1                                                   |      1|none  |     0|acc     |↑  |0.5130|±  |0.0158|
+|arc_challenge                                             |      1|none  |     0|acc     |↑  |0.4761|±  |0.0146|
+|                                                          |       |none  |     0|acc_norm|↑  |0.5009|±  |0.0146|
+|arc_easy                                                  |      1|none  |     0|acc     |↑  |0.7462|±  |0.0089|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7180|±  |0.0092|
+|hellaswag                                                 |      1|none  |     0|acc     |↑  |0.5726|±  |0.0049|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7494|±  |0.0043|
+|leaderboard_bbh                                           |       |none  |      |acc_norm|↑  |0.4810|±  |0.0062|
+| - leaderboard_bbh_boolean_expressions                    |      1|none  |     0|acc_norm|↑  |0.5480|±  |0.0315|
+| - leaderboard_bbh_causal_judgement                       |      1|none  |     0|acc_norm|↑  |0.5187|±  |0.0366|
+| - leaderboard_bbh_date_understanding                     |      1|none  |     0|acc_norm|↑  |0.4640|±  |0.0316|
+| - leaderboard_bbh_disambiguation_qa                      |      1|none  |     0|acc_norm|↑  |0.3120|±  |0.0294|
+| - leaderboard_bbh_formal_fallacies                       |      1|none  |     0|acc_norm|↑  |0.5360|±  |0.0316|
+| - leaderboard_bbh_geometric_shapes                       |      1|none  |     0|acc_norm|↑  |0.1680|±  |0.0237|
+| - leaderboard_bbh_hyperbaton                             |      1|none  |     0|acc_norm|↑  |0.7200|±  |0.0285|
+| - leaderboard_bbh_logical_deduction_five_objects         |      1|none  |     0|acc_norm|↑  |0.4080|±  |0.0311|
+| - leaderboard_bbh_logical_deduction_seven_objects        |      1|none  |     0|acc_norm|↑  |0.3440|±  |0.0301|
+| - leaderboard_bbh_logical_deduction_three_objects        |      1|none  |     0|acc_norm|↑  |0.5680|±  |0.0314|
+| - leaderboard_bbh_movie_recommendation                   |      1|none  |     0|acc_norm|↑  |0.4520|±  |0.0315|
+| - leaderboard_bbh_navigate                               |      1|none  |     0|acc_norm|↑  |0.4200|±  |0.0313|
+| - leaderboard_bbh_object_counting                        |      1|none  |     0|acc_norm|↑  |0.4640|±  |0.0316|
+| - leaderboard_bbh_penguins_in_a_table                    |      1|none  |     0|acc_norm|↑  |0.4589|±  |0.0414|
+| - leaderboard_bbh_reasoning_about_colored_objects        |      1|none  |     0|acc_norm|↑  |0.5720|±  |0.0314|
+| - leaderboard_bbh_ruin_names                             |      1|none  |     0|acc_norm|↑  |0.6840|±  |0.0295|
+| - leaderboard_bbh_salient_translation_error_detection    |      1|none  |     0|acc_norm|↑  |0.4920|±  |0.0317|
+| - leaderboard_bbh_snarks                                 |      1|none  |     0|acc_norm|↑  |0.7191|±  |0.0338|
+| - leaderboard_bbh_sports_understanding                   |      1|none  |     0|acc_norm|↑  |0.7280|±  |0.0282|
+| - leaderboard_bbh_temporal_sequences                     |      1|none  |     0|acc_norm|↑  |0.8360|±  |0.0235|
+| - leaderboard_bbh_tracking_shuffled_objects_five_objects |      1|none  |     0|acc_norm|↑  |0.2040|±  |0.0255|
+| - leaderboard_bbh_tracking_shuffled_objects_seven_objects|      1|none  |     0|acc_norm|↑  |0.1440|±  |0.0222|
+| - leaderboard_bbh_tracking_shuffled_objects_three_objects|      1|none  |     0|acc_norm|↑  |0.3640|±  |0.0305|
+| - leaderboard_bbh_web_of_lies                            |      1|none  |     0|acc_norm|↑  |0.4880|±  |0.0317|
+|piqa                                                      |      1|none  |     0|acc     |↑  |0.7753|±  |0.0097|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7769|±  |0.0097|
+
+============================================================
+
+============================================================
+Top_K: 20 | Batch Size: 1
+------------------------------------------------------------
+|                          Tasks                           |Version|Filter|n-shot| Metric |   |Value |   |Stderr|
+|----------------------------------------------------------|------:|------|-----:|--------|---|-----:|---|-----:|
+|anli_r1                                                   |      1|none  |     0|acc     |↑  |0.5130|±  |0.0158|
+|arc_challenge                                             |      1|none  |     0|acc     |↑  |0.4761|±  |0.0146|
+|                                                          |       |none  |     0|acc_norm|↑  |0.4991|±  |0.0146|
+|arc_easy                                                  |      1|none  |     0|acc     |↑  |0.7466|±  |0.0089|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7180|±  |0.0092|
+|hellaswag                                                 |      1|none  |     0|acc     |↑  |0.5726|±  |0.0049|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7494|±  |0.0043|
+|leaderboard_bbh                                           |       |none  |      |acc_norm|↑  |0.4808|±  |0.0062|
+| - leaderboard_bbh_boolean_expressions                    |      1|none  |     0|acc_norm|↑  |0.5480|±  |0.0315|
+| - leaderboard_bbh_causal_judgement                       |      1|none  |     0|acc_norm|↑  |0.5187|±  |0.0366|
+| - leaderboard_bbh_date_understanding                     |      1|none  |     0|acc_norm|↑  |0.4640|±  |0.0316|
+| - leaderboard_bbh_disambiguation_qa                      |      1|none  |     0|acc_norm|↑  |0.3120|±  |0.0294|
+| - leaderboard_bbh_formal_fallacies                       |      1|none  |     0|acc_norm|↑  |0.5360|±  |0.0316|
+| - leaderboard_bbh_geometric_shapes                       |      1|none  |     0|acc_norm|↑  |0.1720|±  |0.0239|
+| - leaderboard_bbh_hyperbaton                             |      1|none  |     0|acc_norm|↑  |0.7200|±  |0.0285|
+| - leaderboard_bbh_logical_deduction_five_objects         |      1|none  |     0|acc_norm|↑  |0.4080|±  |0.0311|
+| - leaderboard_bbh_logical_deduction_seven_objects        |      1|none  |     0|acc_norm|↑  |0.3440|±  |0.0301|
+| - leaderboard_bbh_logical_deduction_three_objects        |      1|none  |     0|acc_norm|↑  |0.5680|±  |0.0314|
+| - leaderboard_bbh_movie_recommendation                   |      1|none  |     0|acc_norm|↑  |0.4520|±  |0.0315|
+| - leaderboard_bbh_navigate                               |      1|none  |     0|acc_norm|↑  |0.4200|±  |0.0313|
+| - leaderboard_bbh_object_counting                        |      1|none  |     0|acc_norm|↑  |0.4640|±  |0.0316|
+| - leaderboard_bbh_penguins_in_a_table                    |      1|none  |     0|acc_norm|↑  |0.4589|±  |0.0414|
+| - leaderboard_bbh_reasoning_about_colored_objects        |      1|none  |     0|acc_norm|↑  |0.5720|±  |0.0314|
+| - leaderboard_bbh_ruin_names                             |      1|none  |     0|acc_norm|↑  |0.6840|±  |0.0295|
+| - leaderboard_bbh_salient_translation_error_detection    |      1|none  |     0|acc_norm|↑  |0.4840|±  |0.0317|
+| - leaderboard_bbh_snarks                                 |      1|none  |     0|acc_norm|↑  |0.7191|±  |0.0338|
+| - leaderboard_bbh_sports_understanding                   |      1|none  |     0|acc_norm|↑  |0.7280|±  |0.0282|
+| - leaderboard_bbh_temporal_sequences                     |      1|none  |     0|acc_norm|↑  |0.8360|±  |0.0235|
+| - leaderboard_bbh_tracking_shuffled_objects_five_objects |      1|none  |     0|acc_norm|↑  |0.2120|±  |0.0259|
+| - leaderboard_bbh_tracking_shuffled_objects_seven_objects|      1|none  |     0|acc_norm|↑  |0.1400|±  |0.0220|
+| - leaderboard_bbh_tracking_shuffled_objects_three_objects|      1|none  |     0|acc_norm|↑  |0.3600|±  |0.0304|
+| - leaderboard_bbh_web_of_lies                            |      1|none  |     0|acc_norm|↑  |0.4880|±  |0.0317|
+|piqa                                                      |      1|none  |     0|acc     |↑  |0.7758|±  |0.0097|
+|                                                          |       |none  |     0|acc_norm|↑  |0.7769|±  |0.0097|
+
+============================================================
+
+============================================================
+Top_K: 20 | Batch Size: 1
+------------------------------------------------------------
+| Tasks |Version|Filter|n-shot|Metric|   |Value|   |Stderr|
+|-------|------:|------|-----:|------|---|----:|---|-----:|
+|anli_r1|      1|none  |     0|acc   |↑  |0.513|±  |0.0158|
+
+============================================================
+
+============================================================
+Top_K: 20 | Batch Size: 1
+------------------------------------------------------------
+| Tasks |Version|Filter|n-shot|Metric|   |Value|   |Stderr|
+|-------|------:|------|-----:|------|---|----:|---|-----:|
+|anli_r1|      1|none  |     0|acc   |↑  |0.513|±  |0.0158|
+
+============================================================
+
+============================================================
+Top_K: 10 | Batch Size: 1
+------------------------------------------------------------
+| Tasks |Version|Filter|n-shot|Metric|   |Value|   |Stderr|
+|-------|------:|------|-----:|------|---|----:|---|-----:|
+|anli_r1|      1|none  |     0|acc   |↑  |0.344|±  | 0.015|
+
+============================================================
+
+============================================================
+Top_K: 20 | Batch Size: 1
+------------------------------------------------------------
+| Tasks |Version|Filter|n-shot|Metric|   |Value|   |Stderr|
+|-------|------:|------|-----:|------|---|----:|---|-----:|
+|anli_r1|      1|none  |     0|acc   |↑  |0.338|±  | 0.015|
+
+============================================================
+
+============================================================
+Top_K: 10 | Batch Size: 1
+------------------------------------------------------------
+| Tasks |Version|Filter|n-shot|Metric|   |Value|   |Stderr|
+|-------|------:|------|-----:|------|---|----:|---|-----:|
+|anli_r1|      1|none  |     0|acc   |↑  |0.513|±  |0.0158|
+
+============================================================
+
+============================================================
+Top_K: 20 | Batch Size: 1
+------------------------------------------------------------
+| Tasks |Version|Filter|n-shot|Metric|   |Value|   |Stderr|
+|-------|------:|------|-----:|------|---|----:|---|-----:|
+|anli_r1|      1|none  |     0|acc   |↑  |0.513|±  |0.0158|
+
+============================================================
