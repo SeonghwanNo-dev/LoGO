@@ -1,7 +1,12 @@
 import re
+import sys
 import os
 from datasets import load_dataset
 from huggingface_hub import list_repo_files
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from data_config import Dataset_2_Config
+
 
 def load_target_names(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -118,27 +123,25 @@ def download_datasets(repo_id, verified_names, base_save_path):
 
 if __name__ == "__main__":
     # Settings
-    LIST_FILE = './Data/dataset_2/dataset_temp.txt'
-    HF_DATASET_ID = "lorahub/flanv2"
-    SAVE_DIR = "./Data/dataset_2/local_flan_v2"
+    config = Dataset_2_Config()
 
     # 1. Load your local list
-    raw_targets = load_target_names(LIST_FILE)
+    raw_targets = load_target_names(config.target_data_txt)
 
     # 2. Separate function to validate targets before any download
-    verified_targets_1, verified_targets_2 = validate_targets(repo_id = HF_DATASET_ID, target_names = raw_targets, log_file="result.txt")
+    verified_targets_1, verified_targets_2 = validate_targets(repo_id = config.huggingface_dataset_ID, target_names = raw_targets, log_file="result.txt")
 
     # 3. Download only the verified ones
     print(f"\nStarting download for {len(verified_targets_1)+len(verified_targets_2)} verified tasks...")
-    errored_files_1, count_1 = download_datasets(HF_DATASET_ID, verified_targets_1, SAVE_DIR)
+    errored_files_1, count_1 = download_datasets(config.huggingface_dataset_ID, verified_targets_1, config.save_directory)
     print(f"Failed in partition 1: {errored_files_1}\n\n")
-    errored_files_2, count_2 = download_datasets(HF_DATASET_ID, verified_targets_2, SAVE_DIR)
+    errored_files_2, count_2 = download_datasets(config.huggingface_dataset_ID, verified_targets_2, config.save_directory)
     print(f"Failed at partition 2: {errored_files_2}\n")
-    print(f"\nFinal Summary: {count_1}+{count_2} datasets successfully saved to {SAVE_DIR}.")
+    print(f"\nFinal Summary: {count_1}+{count_2} datasets successfully saved to {config.save_directory}.")
     
     
     # # 4. Load from the local directory
-    # dataset = load_from_disk(SAVE_DIR)
+    # dataset = load_from_disk(self.save_directory)
     
     
 '''
