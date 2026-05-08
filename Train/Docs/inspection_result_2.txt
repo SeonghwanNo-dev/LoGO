@@ -1,0 +1,17 @@
+--- [Tensors in ./Train/lora_adapters_fine_tuned/6_1/adversarial_qa_dbert_answer_the_following_q.json/adapter_model.safetensors] ---
+Name: base_model.model.model.layers.31.self_attn.q_proj.lora_A.weight
+  Shape: [32, 4096]
+  Dtype: torch.float32
+------------------------------
+Name: base_model.model.model.layers.31.self_attn.q_proj.lora_B.weight
+  Shape: [4096, 32]
+  Dtype: torch.float32
+------------------------------
+Name: base_model.model.model.layers.31.self_attn.v_proj.lora_A.weight
+  Shape: [32, 4096]
+  Dtype: torch.float32
+------------------------------
+Name: base_model.model.model.layers.31.self_attn.v_proj.lora_B.weight
+  Shape: [1024, 32]
+  Dtype: torch.float32
+------------------------------

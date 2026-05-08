@@ -55,3 +55,8 @@ class ObserverConfig_2(object):
         self.watch_dir = "./6_2/"
         self.batch_size = 5
         self.stable_time_threshold = 300 
+
+class InspectSafetensorsConfig(object):
+  def __init__(self):
+    self.file_path = "./Train/lora_adapters_fine_tuned/6_1/adversarial_qa_dbert_answer_the_following_q.json/adapter_model.safetensors"
+    self.save_file = "./Train/Docs/inspection_result.txt"
