@@ -9,7 +9,7 @@ class LogoConfig(object):
     self.task_name = ["anli_r1"]
     self.top_k = 20
     self.adapter_paths = glob.glob(f"./Train/lora_adapters_fine_tuned/6_1/*/adapter_model.safetensors")[:102]
-    self.output_file = "logo_result.txt"
+    self.output_file = "./Data/Docs/logo_result.txt"
     self.batch_size = 1
 
     # Result Check
