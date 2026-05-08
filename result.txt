@@ -1,0 +1,18 @@
+--- Validation Report for lorahub/flanv2 ---
+Total processed: 1
+Valid (with matches): 1
+Invalid (zero matches): 0
+The number of total files: 1
+
+[MATCHED TARGETS with *]
+
+
+[MATCHED TARGETS without *]
+anli_r1 (1 files):
+  - anli_r1:0.1.0.json
+
+
+
+[INVALID TARGETS]
+
+

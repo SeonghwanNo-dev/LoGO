@@ -1,0 +1,463 @@
+=== Dataset Matching Results Report ===
+
+Matching Rule: [adversarial_qa_dbert_*]
+  - adversarial_qa
+  - adverserial_qa
+--------------------------------------------------
+Matching Rule: [adversarial_qa_dbidaf_*]
+  - adversarial_qa
+  - adverserial_qa
+--------------------------------------------------
+Matching Rule: [adversarial_qa_droberta_*]
+  - adversarial_qa
+  - adverserial_qa
+--------------------------------------------------
+Matching Rule: [ai2_arc_arc_challenge]
+  - ai2_arithmetic_questions
+  - arc
+  - arc_challenge
+--------------------------------------------------
+Matching Rule: [ai2_arc_arc_easy]
+  - ai2_arithmetic_questions
+  - arc
+  - arc_easy
+--------------------------------------------------
+Matching Rule: [bool_q]
+  - bool_q
+--------------------------------------------------
+Matching Rule: [coqa]
+  - coqa
+--------------------------------------------------
+Matching Rule: [cosmos_qa]
+  - cosmos_qa
+  - cosmosqa
+--------------------------------------------------
+Matching Rule: [drop]
+  - drop
+--------------------------------------------------
+Matching Rule: [duorc_paraphraserc_*]
+  - duorc
+  - duorc_ParaphraseRC
+  - duorc_SelfRC
+--------------------------------------------------
+Matching Rule: [duorc_selfrc_*]
+  - duorc
+  - duorc_ParaphraseRC
+  - duorc_SelfRC
+--------------------------------------------------
+Matching Rule: [hotpotqa]
+  - hotpotqa
+--------------------------------------------------
+Matching Rule: [kilt_tasks_hotpotqa_*]
+  - hotpotqa
+  - kilt_tasks
+--------------------------------------------------
+Matching Rule: [natural_questions_open]
+  - natural_questions
+  - question_&_answer_zre
+--------------------------------------------------
+Matching Rule: [openbookqa]
+  - openbookqa
+--------------------------------------------------
+Matching Rule: [qasc_*]
+  - qasc
+--------------------------------------------------
+Matching Rule: [quac]
+  - quac
+--------------------------------------------------
+Matching Rule: [quail_*]
+  - quail
+  - quail_context
+  - quail_description
+  - quail_no
+--------------------------------------------------
+Matching Rule: [quarel_*]
+  - quarel
+  - quarel_choose
+  - quarel_do
+  - quarel_heres
+  - quarel_logic
+  - quarel_testing
+--------------------------------------------------
+Matching Rule: [quartz_*]
+  - quartz
+  - quartz_answer
+  - quartz_given
+  - quartz_having
+  - quartz_paragraph
+  - quartz_read
+  - quartz_use
+--------------------------------------------------
+Matching Rule: [quoref_*]
+  - quoref
+  - quoref_Answer
+  - quoref_Context
+  - quoref_Find
+  - quoref_Found
+  - quoref_Given
+  - quoref_Guess
+  - quoref_Read
+  - quoref_What
+--------------------------------------------------
+Matching Rule: [race_high_*]
+  - race
+  - race_high
+  - race_middle
+--------------------------------------------------
+Matching Rule: [race_middle_*]
+  - race
+  - race_high
+  - race_middle
+--------------------------------------------------
+Matching Rule: [ropes_*]
+  - ropes
+  - ropes_background
+  - ropes_given
+  - ropes_new
+  - ropes_plain
+  - ropes_prompt
+  - ropes_read
+--------------------------------------------------
+Matching Rule: [sciq_*]
+  - sciq
+--------------------------------------------------
+Matching Rule: [squad_v1.1]
+  - squad2.0
+  - squad_1.1
+  - squad_v1
+  - squad_v2
+--------------------------------------------------
+Matching Rule: [squad_v2.0]
+  - squad2.0
+  - squad_1.1
+  - squad_v1
+  - squad_v2
+--------------------------------------------------
+Matching Rule: [trivia_qa_rc]
+  - trivia_qa
+  - trivia_qa_wiki_missing
+  - triviaqa
+--------------------------------------------------
+Matching Rule: [unified_qa_science_inst]
+  - unified_qa_science_inst
+--------------------------------------------------
+Matching Rule: [web_questions_*]
+  - question_&_answer_zre
+  - web_questions
+--------------------------------------------------
+Matching Rule: [wiki_hop_original_*]
+  - wiki_auto
+  - wiki_auto_all_data
+  - wiki_bio
+  - wiki_dialog
+  - wiki_hop
+  - wiki_lingua_english_en
+  - wiki_movies
+  - wiki_qa
+--------------------------------------------------
+Matching Rule: [wiki_qa_*]
+  - wiki_auto
+  - wiki_auto_all_data
+  - wiki_bio
+  - wiki_dialog
+  - wiki_hop
+  - wiki_lingua_english_en
+  - wiki_movies
+  - wiki_qa
+--------------------------------------------------
+Matching Rule: [anli_r1]
+  - anli
+  - anli_r1
+  - anli_r2
+  - anli_r3
+--------------------------------------------------
+Matching Rule: [anli_r2]
+  - anli
+  - anli_r1
+  - anli_r2
+  - anli_r3
+--------------------------------------------------
+Matching Rule: [anli_r3]
+  - anli
+  - anli_r1
+  - anli_r2
+  - anli_r3
+--------------------------------------------------
+Matching Rule: [glue_mnli]
+  - glue_mrpc
+  - glue_qqp
+  - mnli
+--------------------------------------------------
+Matching Rule: [glue_rte]
+  - glue_mrpc
+  - glue_qqp
+  - rte
+--------------------------------------------------
+Matching Rule: [glue_wnli]
+  - glue_mrpc
+  - glue_qqp
+  - wnli
+--------------------------------------------------
+Matching Rule: [snli]
+  - snli
+--------------------------------------------------
+Matching Rule: [super_glue_cb]
+  - cb
+  - glue_mrpc
+  - glue_qqp
+--------------------------------------------------
+Matching Rule: [super_glue_copa]
+  - copa
+  - glue_mrpc
+  - glue_qqp
+--------------------------------------------------
+Matching Rule: [super_glue_multirc]
+  - glue_mrpc
+  - glue_qqp
+  - multi_news
+  - multi_woz_v22
+  - multilingual_amazon_reviews
+  - multilingual_ted
+  - multinli
+  - multirc
+--------------------------------------------------
+Matching Rule: [super_glue_record]
+  - glue_mrpc
+  - glue_qqp
+  - record
+--------------------------------------------------
+Matching Rule: [super_glue_wic]
+  - glue_mrpc
+  - glue_qqp
+  - wic
+--------------------------------------------------
+Matching Rule: [super_glue_wsc.fixed]
+  - glue_mrpc
+  - glue_qqp
+  - wsc
+--------------------------------------------------
+Matching Rule: [ag_news_subset]
+  - ag_news
+  - ag_news_subset
+  - news_commentary
+  - news_editorials
+  - news_headlines_dataset_for_sarcasm_detection
+--------------------------------------------------
+Matching Rule: [amazon_polarity_*]
+  - amazon_and_yelp_summarization_dataset
+  - amazon_fine_food_reviews
+  - amazon_polarity
+  - amazon_us_reviews
+--------------------------------------------------
+Matching Rule: [app_reviews_*]
+  - app_reviews
+--------------------------------------------------
+Matching Rule: [dbpedia_14_*]
+  - dbpedia_14
+--------------------------------------------------
+Matching Rule: [glue_cola]
+  - cola
+  - glue_mrpc
+  - glue_qqp
+--------------------------------------------------
+Matching Rule: [glue_mrpc]
+  - glue_mrpc
+  - glue_qqp
+  - mrpc
+--------------------------------------------------
+Matching Rule: [glue_qqp]
+  - glue_mrpc
+  - glue_qqp
+  - qqp
+--------------------------------------------------
+Matching Rule: [glue_sst2]
+  - glue_mrpc
+  - glue_qqp
+  - sst2
+--------------------------------------------------
+Matching Rule: [imdb_reviews_plain_text]
+  - imdb
+  - imdb_reviews
+--------------------------------------------------
+Matching Rule: [opinion_abstracts_idebate]
+  - opinion_abstracts_idebate
+  - opinion_abstracts_rotten_tomatoes
+--------------------------------------------------
+Matching Rule: [opinion_abstracts_rotten_tomatoes]
+  - opinion_abstracts_idebate
+  - opinion_abstracts_rotten_tomatoes
+  - rotten_tomatoe
+--------------------------------------------------
+Matching Rule: [sentiment140]
+  - sentiment140
+--------------------------------------------------
+Matching Rule: [trec]
+  - trec
+--------------------------------------------------
+Matching Rule: [yelp_polarity_reviews]
+  - yelp_polarity
+  - yelp_polarity_reviews
+  - yelp_restaurant_review
+  - yelp_review_full
+--------------------------------------------------
+Matching Rule: [cos_e_v1.11_*]
+  - cos_e
+--------------------------------------------------
+Matching Rule: [hellaswag]
+  - hellaswag
+  - swag
+--------------------------------------------------
+Matching Rule: [lambada]
+  - lambada
+--------------------------------------------------
+Matching Rule: [piqa]
+  - piqa
+--------------------------------------------------
+Matching Rule: [social_i_qa_*]
+  - social_i
+  - social_iqa
+--------------------------------------------------
+Matching Rule: [story_cloze_2016]
+  - story_cloze
+  - storycommonsense
+--------------------------------------------------
+Matching Rule: [winogrande]
+  - winograd_wsc
+  - winogrande
+--------------------------------------------------
+Matching Rule: [wiqa_*]
+  - wiqa
+--------------------------------------------------
+Matching Rule: [aeslc]
+  - aeslc
+--------------------------------------------------
+Matching Rule: [dream_*]
+  - dream
+  - dream_answer
+  - dream_baseline
+  - dream_generate
+  - dream_read
+--------------------------------------------------
+Matching Rule: [gem_wiki_lingua_english_en]
+  - wiki_auto
+  - wiki_auto_all_data
+  - wiki_bio
+  - wiki_dialog
+  - wiki_hop
+  - wiki_lingua_english_en
+  - wiki_movies
+  - wiki_qa
+--------------------------------------------------
+Matching Rule: [samsum]
+  - samsum
+--------------------------------------------------
+Matching Rule: [gigaword]
+  - gigaword
+--------------------------------------------------
+Matching Rule: [gem_common_gen]
+  - common_gen
+  - commongen
+  - commonsenseqa
+--------------------------------------------------
+Matching Rule: [gem_dart]
+  - dart
+--------------------------------------------------
+Matching Rule: [gem_e2e_nlg]
+  - e2e
+  - e2e_nlg
+--------------------------------------------------
+Matching Rule: [gem_web_nlg_en]
+  - web_nlg
+  - web_nlg_en
+--------------------------------------------------
+Matching Rule: [wiki_bio_*]
+  - wiki_auto
+  - wiki_auto_all_data
+  - wiki_bio
+  - wiki_dialog
+  - wiki_hop
+  - wiki_lingua_english_en
+  - wiki_movies
+  - wiki_qa
+--------------------------------------------------
+Matching Rule: [para_crawl_enes]
+  - para_crawl_enes
+  - para_nmt
+  - para_pat
+--------------------------------------------------
+Matching Rule: [wmt14_translate_fr_en]
+  - wmt14_enfr
+--------------------------------------------------
+Matching Rule: [wmt16_translate_cs_en]
+  - wmt16_translate_csen
+  - wmt16_translate_deen
+  - wmt16_translate_fien
+  - wmt16_translate_roen
+  - wmt16_translate_ruen
+  - wmt16_translate_tren
+--------------------------------------------------
+Matching Rule: [wmt16_translate_de_en]
+  - wmt16_translate_csen
+  - wmt16_translate_deen
+  - wmt16_translate_fien
+  - wmt16_translate_roen
+  - wmt16_translate_ruen
+  - wmt16_translate_tren
+--------------------------------------------------
+Matching Rule: [wmt16_translate_fi_en]
+  - wmt16_translate_csen
+  - wmt16_translate_deen
+  - wmt16_translate_fien
+  - wmt16_translate_roen
+  - wmt16_translate_ruen
+  - wmt16_translate_tren
+--------------------------------------------------
+Matching Rule: [wmt16_translate_ro_en]
+  - wmt16_translate_csen
+  - wmt16_translate_deen
+  - wmt16_translate_fien
+  - wmt16_translate_roen
+  - wmt16_translate_ruen
+  - wmt16_translate_tren
+--------------------------------------------------
+Matching Rule: [wmt16_translate_ru_en]
+  - wmt16_translate_csen
+  - wmt16_translate_deen
+  - wmt16_translate_fien
+  - wmt16_translate_roen
+  - wmt16_translate_ruen
+  - wmt16_translate_tren
+--------------------------------------------------
+Matching Rule: [wmt16_translate_tr_en]
+  - wmt16_translate_csen
+  - wmt16_translate_deen
+  - wmt16_translate_fien
+  - wmt16_translate_roen
+  - wmt16_translate_ruen
+  - wmt16_translate_tren
+--------------------------------------------------
+Matching Rule: [definite_pronoun_resolution]
+  - definite_pronoun_resolution
+--------------------------------------------------
+Matching Rule: [fix_punct]
+  - fix_punct
+--------------------------------------------------
+Matching Rule: [huggingface]
+  -> No matching tasks found
+--------------------------------------------------
+Matching Rule: [math_dataset_algebra__linear_1d]
+  - math_dataset
+  - math_qa
+--------------------------------------------------
+Matching Rule: [opinion_abstracts_*]
+  - opinion_abstracts_idebate
+  - opinion_abstracts_rotten_tomatoes
+--------------------------------------------------
+Matching Rule: [true_case]
+  - true_case
+--------------------------------------------------
+Matching Rule: [word_segment]
+  - word_segment
+--------------------------------------------------
+Total number of successfully matched tasks: 274
+Matching Success Rate: 91 / 92

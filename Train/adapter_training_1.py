@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 import sys
 from typing import List
@@ -131,7 +131,7 @@ def train(
     
     model.config.use_cache = False
     tokenizer.pad_token = tokenizer.eos_token
-    model.config.pad_token_id = model.config.eos_token_id
+    model.config.pad_token_id = model.config.eos_token_id[0]
 
     
     # 2. Data Processing
@@ -254,28 +254,24 @@ if __name__ == "__main__":
     for task in task_folders:
         
         full_path = os.path.join(config.base_path, task)
-        
-        if task in done_task_folders:
-            print(f"{task} is done")
-        else:
-            print(f"\n" + "="*50)
-            print(f"Current Task: {task}")
-            print("="*50 + "\n")
-            train(
-                base_model = config.base_model,
-                model_type = config.model_type,
-                data_path = full_path,
-                output_dir = f"{config.output_dir}/{task}",
-                adapter_name = config.adapter_name,
-                wandb_project = config.wandb_project,
-                wandb_run_name = task,
-                wandb_watch = config.wandb_watch,  # options: false | gradients | all
-                wandb_log_model = config.wandb_log_model,  # options: false | true
-                resume_from_checkpoint = config.resume_from_checkpoint,  # either training checkpoint or final adapter
-                # num_epochs = config.num_epochs,
-                eval_step = config.eval_step,
-                save_step = config.save_step,
-            )
+        print(f"\n" + "="*50)
+        print(f"Current Task: {task}")
+        print("="*50 + "\n")
+        train(
+            base_model = config.base_model,
+            model_type = config.model_type,
+            data_path = full_path,
+            output_dir = f"{config.output_dir}/{task}",
+            adapter_name = config.adapter_name,
+            wandb_project = config.wandb_project,
+            wandb_run_name = task,
+            wandb_watch = config.wandb_watch,  # options: false | gradients | all
+            wandb_log_model = config.wandb_log_model,  # options: false | true
+            resume_from_checkpoint = config.resume_from_checkpoint,  # either training checkpoint or final adapter
+            # num_epochs = config.num_epochs,
+            eval_step = config.eval_step,
+            save_step = config.save_step,
+        )
 
         # GPU Memory Cleanup
         gc.collect()

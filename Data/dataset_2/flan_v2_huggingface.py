@@ -118,9 +118,9 @@ def download_datasets(repo_id, verified_names, base_save_path):
 
 if __name__ == "__main__":
     # Settings
-    LIST_FILE = './dataset_list.txt'
+    LIST_FILE = './Data/dataset_2/dataset_temp.txt'
     HF_DATASET_ID = "lorahub/flanv2"
-    SAVE_DIR = "./local_flan_v2"
+    SAVE_DIR = "./Data/dataset_2/local_flan_v2"
 
     # 1. Load your local list
     raw_targets = load_target_names(LIST_FILE)

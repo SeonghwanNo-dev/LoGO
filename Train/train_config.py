@@ -1,36 +1,36 @@
 class AdapterTrainerConfig_1(object):
   def __init__(self):
     self.base_path = "./Data/dataset_2/local_flan_v2_1"
-    self.output_dir = "./lora_adapters_fine_tuned/6_1",
-    self.base_model = "meta-llama/Llama-3.1-8B-Instruct",
-    self.model_type = "LLaMA",
-    self.data_path = full_path,
-    self.adapter_name = "lora",
-    self.wandb_project = "LoGo Adapters_5",
-    self.wandb_run_name = task,
-    self.wandb_watch = "false",  # options: false | gradients | all
-    self.wandb_log_model = "false",  # options: false | true
-    self.resume_from_checkpoint = None,  # either training checkpoint or final adapter
-    self.num_epochs = 10,
-    self.eval_step = 50,
-    self.save_step = 50,
+    self.output_dir = "./lora_adapters_fine_tuned/6_3"
+    self.base_model = "meta-llama/Llama-3.1-8B-Instruct"
+    self.model_type = "LLaMA"
+    self.data_path = ""
+    self.adapter_name = "lora"
+    self.wandb_project = "LoGo Adapters_5"
+    self.wandb_run_name = ""
+    self.wandb_watch = "false"  # options: false | gradients | all
+    self.wandb_log_model = "false"  # options: false | true
+    self.resume_from_checkpoint = None  # either training checkpoint or final adapter
+    self.num_epochs = 10
+    self.eval_step = 50
+    self.save_step = 50
 
 class AdapterTrainerConfig_2(object):
   def __init__(self):
     self.base_path = "./Data/dataset_2/local_flan_v2_2"
-    self.output_dir = "./lora_adapters_fine_tuned/6_2",
-    self.base_model = "meta-llama/Llama-3.1-8B-Instruct",
-    self.model_type = "LLaMA",
-    self.data_path = full_path,
-    self.adapter_name = "lora",
-    self.wandb_project = "LoGo Adapters_5",
-    self.wandb_run_name = task,
-    self.wandb_watch = "false",  # options: false | gradients | all
-    self.wandb_log_model = "false",  # options: false | true
-    self.resume_from_checkpoint = None,  # either training checkpoint or final adapter
-    self.num_epochs = 10,
-    self.eval_step = 50,
-    self.save_step = 50,
+    self.output_dir = "./lora_adapters_fine_tuned/6_2"
+    self.base_model = "meta-llama/Llama-3.1-8B-Instruct"
+    self.model_type = "LLaMA"
+    self.data_path = ""
+    self.adapter_name = "lora"
+    self.wandb_project = "LoGo Adapters_5"
+    self.wandb_run_name = ""
+    self.wandb_watch = "false"  # options: false | gradients | all
+    self.wandb_log_model = "false"  # options: false | true
+    self.resume_from_checkpoint = None  # either training checkpoint or final adapter
+    self.num_epochs = 10
+    self.eval_step = 50
+    self.save_step = 50
 
 
 class GoogleUploadConfig(object):
@@ -53,5 +53,5 @@ class ObserverConfig_2(object):
         self.google_drive_folder_id = '1MnADBZTRqtblNiFxQWJjS3AMJMID1qHw'
         self.file_name=""
         self.watch_dir = "./6_2/"
-        self.batch_size = 
+        self.batch_size = 5
         self.stable_time_threshold = 300 

@@ -45,14 +45,11 @@ To prevent disk overflow caused by frequent checkpointing on the Jetson device, 
 1.  Update configurations in `train_config.py`.
 2.  Start the training processes in separate tmux sessions:
     ```bash
-    tmux new -s train1 'python3 adapter_training_1.py'
-    tmux new -s train2 'python3 adapter_training_2.py'
+    tmux new -s train1 'python3 ./Train/adapter_training_1.py'
+    tmux new -s train2 'python3 ./Train/adapter_training_2.py'
     ```
 3.  Start the monitoring processes in background tmux sessions:
-    
-```bash
-    tmux new -s watch1 'python3 observer_1.py'
-    tmux new -s watch2 'python3 observer_2.py'
+    ```bash
+    tmux new -s watch1 'python3 ./Train/lora_apaters_rine_tuned/observer_1.py'
+    tmux new -s watch2 'python3 ./Train/lora_apaters_rine_tuned/observer_2.py'
     ```
-
-```
