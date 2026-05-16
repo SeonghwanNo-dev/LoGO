@@ -1,13 +1,25 @@
 # Train Module Guide
 
-This module is designed for efficient **LoRA adapter training** and automated resource management within an NVIDIA Jetson environment.
+This module is designed for efficient **LoRA adapter training** and automated resource management.
 
 ---
 
 ## 📂 File Structure
-*   **`lora_adapters_fine_tuned/`**: Base directory where trained adapters are stored.
+Train/
+├── Docs/
+├── train_config.py
+├── adapter_training_1.py
+├── adapter_training_2.py
+└── lora_adapters_fine_tuned/
+    ├── 6_1/
+    ├── observer_1.py 
+    ├── observer_2.py 
+    ├── google_upload.py
+    └── inspect_safetensors.py
+
 *   **`train_config.py`**: Central configuration file to manage all training parameters and upload settings.
 *   **`adapter_training_1.py` / `2.py`**: Main training scripts designed for parallel GPU execution.
+*   **`lora_adapters_fine_tuned/`**: Base directory where trained adapters are stored.
 *   **`observer_1.py` / `2.py`**: Real-time monitoring scripts to manage local disk space.
 *   **`google_upload.py`**: Module for Google Drive API integration and automated file uploading.
 
