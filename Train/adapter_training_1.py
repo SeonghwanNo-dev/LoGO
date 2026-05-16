@@ -147,7 +147,16 @@ def train(
 
     # Generate prompts for training and evaluation data
     def apply_prompt(example):
-        return {"text": f"Instruction: {example['inputs']}\nResponse: {example['targets']}"}
+        formatted_text = f"Instruction: {example['inputs']}\nResponse: {example['targets']}\n\n"
+
+        # For Debugging
+        output_dir = "Train/Docs"
+        os.makedirs(output_dir, exist_ok=True)
+        file_path = os.path.join(output_dir, "prompt_applied_input.txt")
+        with open(file_path, "a", encoding="utf-8") as f:
+            f.write(formatted_text)
+
+        return {"text": formatted_text.strip()}
     train_data = train_data.map(apply_prompt)
     eval_data = eval_data.map(apply_prompt)
     test_data = test_data.map(apply_prompt)
@@ -272,7 +281,7 @@ if __name__ == "__main__":
             eval_step = config.eval_step,
             save_step = config.save_step,
         )
-
+        print()
         # GPU Memory Cleanup
         gc.collect()
         torch.cuda.empty_cache()
