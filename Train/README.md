@@ -5,6 +5,8 @@ This module is designed for efficient **LoRA adapter training** and automated re
 ---
 
 ## 📂 File Structure
+
+```text
 Train/
 ├── Docs/
 ├── train_config.py
@@ -16,6 +18,7 @@ Train/
     ├── observer_2.py 
     ├── google_upload.py
     └── inspect_safetensors.py
+```
 
 *   **`train_config.py`**: Central configuration file to manage all training parameters and upload settings.
 *   **`adapter_training_1.py` / `2.py`**: Main training scripts designed for parallel GPU execution.
