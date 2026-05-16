@@ -258,11 +258,11 @@ def train(
 if __name__ == "__main__":
 
     config = AdapterTrainerConfig_1()
-    task_folders = [f for f in os.listdir(config.base_path) if os.path.isdir(os.path.join(config.base_path, f))]
+    task_folders = [f for f in os.listdir(config.dataset_base_path) if os.path.isdir(os.path.join(config.dataset_base_path, f))]
 
     for task in task_folders:
         
-        full_path = os.path.join(config.base_path, task)
+        full_path = os.path.join(config.dataset_base_path, task)
         print(f"\n" + "="*50)
         print(f"Current Task: {task}")
         print("="*50 + "\n")

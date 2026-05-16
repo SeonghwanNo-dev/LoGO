@@ -1,6 +1,6 @@
 class AdapterTrainerConfig_1(object):
   def __init__(self):
-    self.base_path = "./Data/dataset_2/local_flan_v2_1"
+    self.dataset_base_path = "./Data/dataset_2/local_flan_v2_1"
     self.output_dir = "./lora_adapters_fine_tuned/6_3"
     self.base_model = "meta-llama/Llama-3.1-8B-Instruct"
     self.model_type = "LLaMA"
@@ -17,7 +17,7 @@ class AdapterTrainerConfig_1(object):
 
 class AdapterTrainerConfig_2(object):
   def __init__(self):
-    self.base_path = "./Data/dataset_2/local_flan_v2_2"
+    self.dataset_base_path = "./Data/dataset_2/local_flan_v2_2"
     self.output_dir = "./lora_adapters_fine_tuned/6_2"
     self.base_model = "meta-llama/Llama-3.1-8B-Instruct"
     self.model_type = "LLaMA"
