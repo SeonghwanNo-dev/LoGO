@@ -14,21 +14,24 @@ This repository is an implementation of the research paper **"LoRA on the Go: In
 
 The project is organized into three primary modules, each handling a distinct stage of the machine learning pipeline:
 
-### 1. 📂 Data Module(./Data)
+### 1. 📂 [Data Module](./Data)
 *   **Role**: Responsible for data loading, preprocessing, and management.
+*   **Key Components**:
+    * `ds.py`: 
+
 
 ### 2. 📂 [Inference Module](./Inference)
 *   **Role**: Handles model inference and performance benchmarking.
 *   **Key Components**:
-    *   `logo.py`: Main inference engine refactored for modular execution.
     *   `inference_config.py`: Centralized `LogoConfig` for managing model IDs, target layers, and sampling parameters.
+    *   `logo.py`: Main inference engine refactored for modular execution.
     *   `run_lm_eval.py`: Benchmarking tool for evaluating model accuracy across various tasks (e.g., `arc_easy`).
 
 ### 3. 📂 [Train Module](./Train)
 *   **Role**: Manages parallel LoRA fine-tuning and automated resource optimization.
 *   **Key Components**:
-    *   `adapter_training_1.py` & `2.py`: Scripts for simultaneous dual-GPU training.
     *   `train_config.py`: Integrated configuration for training hyperparameters and disk management.
+    *   `adapter_training_1.py` & `2.py`: Scripts for simultaneous dual-GPU training.
     *   `observer_1.py` & `2.py`: Disk monitoring systems that trigger automated cloud uploads to prevent storage overflow.
     *   `google_upload.py`: Automated Google Drive integration for seamless checkpoint backup.
 
@@ -36,19 +39,20 @@ The project is organized into three primary modules, each handling a distinct st
 
 ## 🚀 Getting Started
 
-### Prerequisites
-*   **tmux**: Required for persistent background execution of training and monitoring sessions.
-*   **Python 3.8+** with necessary PEFT and Transformers libraries.
+### Environment Setup
+
 
 ### Basic Workflow
-1.  **Configure**: Set your model paths and hyperparameters in `data_config.py`, `train_config.py`, `inference_config.py`.
-2.  **Train**: Launch parallel training sessions using tmux to maximize GPU utilization.
-3.  **Monitor**: Ensure observers are running to manage local disk space via automated cloud uploads.
-4.  **Inference**: Deploy fine-tuned adapters using the modular inference engine in the `Inference` directory.
+
+The core workflow follows a **Data ➔ Train ➔ Inference** sequence.
+
+*  **Configure First**: You must always configure the respective config_file before running any module.
+*  **Execute Pipeline**: Proceed with the workflow in the order of Data, Train, and then Inference.
+*  **Detailed Usage**: Please refer to the `README.md` inside each module directory for specific usage and commands.
 
 ---
 
 ## 🛠 Tech Stack
 *   **Core**: Python, PyTorch
-*   **PEFT**: LoRA (Low-Rank Adaptation)
+*   **PEFT**: LoRA (Low-Rank Adaptation), Multi-LoRA Serving
 *   **DevOps**: tmux, Google Drive API
