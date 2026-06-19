@@ -10,5 +10,5 @@ class DataAllocationConfig(object):
   def __init__(self):
     self.base_path = "./Data/dataset_2/local_flan_v2"
     self.split_num = 2
-    self.target_1_path = "./Data/dataset_2/local_flan_v2_3"
-    self.target_2_path = "./Data/dataset_2/local_flan_v2_4"
+    self.target_1_path = "./Data/dataset_2/local_flan_v2_1"
+    self.target_2_path = "./Data/dataset_2/local_flan_v2_2"
