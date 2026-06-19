@@ -19,7 +19,7 @@ The project is organized into three primary directories, each handling a distinc
 *   **Key Components**:
     *   `data_config.py`: Centralized configuration managing directories, dataset sources, and paths.
     *   `download_from_huggingface.py`: Utility script to download FLAN-v2 datasets directly from Hugging Face.
-    *   `data_allocation.py`: Core script that partitions the dataset for parallel training across multiple GPUs.
+    *   `data_allocation.py`: A script that partitions the dataset for parallel training across multiple GPUs.
 
 ### 2. 📂 [Inference Directory](./Inference)
 *   **Role**: Handles model inference and performance benchmarking.
