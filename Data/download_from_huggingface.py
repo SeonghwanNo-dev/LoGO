@@ -4,7 +4,7 @@ import os
 from datasets import load_dataset
 from huggingface_hub import list_repo_files
 
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+# sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from data_config import Dataset_2_Config
 
 

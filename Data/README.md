@@ -8,7 +8,7 @@ This module is designed for **efficient dataset management and distribution**, s
 
 * **`dataset_1/`**: (Outdated) Initial experimental datasets.
 * **`dataset_2/`**: The primary directory containing the datasets used in the LoGO paper.
-* **`dataset_2/flan_v2_huggingface.py`**: A utility script to download the FLAN-v2 dataset directly from Hugging Face and save it to the local disk
+* **`download_from_huggingface.py`**: A utility script to download the FLAN-v2 dataset directly from Hugging Face and save it to the local disk
 * **`data_allocation.py`**: A core script that divides the entire dataset into multiple folders to enable **Parallel Training** across multiple GPUs.
 * **`data_config.py`**: A centralized configuration file for managing data module parameters, such as download paths, splitting logic, and target directories.
 
@@ -24,7 +24,7 @@ This class manages the initial acquisition and storage of the raw dataset.
 
 * **`huggingface_dataset_ID`**: The source repository on Hugging Face (default: `"lorahub/flanv2"`).
 * **`save_directory`**: The local path where the downloaded dataset will be stored (e.g., `./Data/dataset_2/local_flan_v2`).
-* **`target_data_txt`**: Path to a metadata or temporary text file used during the download/filtering process.
+* **`target_data_txt`**: Path to a text file containing the target dataset/task names. You can list names separated by commas or newlines. Wildcard patterns (e.g., `adversarial_qa_dbert_*`, `bool_q`) are supported; the download script will automatically parse them and search for matching files in the remote Hugging Face repository.
 
 ### 2. `DataAllocationConfig`
 
@@ -41,15 +41,14 @@ This class defines how the raw dataset is partitioned for parallel training acro
 
 ### 1. Update Configurations
 
-Modify the parameters in `data_config.py` to match your current system environment
+Modify the parameters in `./Data/data_config.py`
 
 ### 2. Download Dataset
 
 Retrieve the raw data from Hugging Face and store it locally:
 
 ```bash
-python3 ./Data/dataset_2/flan_v2_huggingface.py
-
+python3 ./Data/download_from_huggingface.py
 ```
 
 ### 3. Allocate Data for Parallel Training

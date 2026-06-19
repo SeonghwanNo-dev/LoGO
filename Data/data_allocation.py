@@ -24,13 +24,15 @@ def split_tasks(config):
     return first_half, second_half
 
 def move_tasks(base_path, tasks, destination):
+    os.makedirs(destination, exist_ok=True)
+
     for task in tasks:
-        source_dir = os.path.join(config.base_path, task)
+        source_dir = os.path.join(base_path, task)
         dest_dir = os.path.join(destination, task)
         
         # Move the entire directory to the new location
         shutil.move(source_dir, dest_dir)
-        print(f"Successfully moved: {task} -> {destination}")
+        print(f"Successfully moved: {task} -> {dest_dir}")
 
 if __name__ == "__main__":
     # setting

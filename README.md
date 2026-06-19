@@ -12,22 +12,23 @@ This repository is an implementation of the research paper **"LoRA on the Go: In
 
 ## ⚙️ Project Structure
 
-The project is organized into three primary modules, each handling a distinct stage of the machine learning pipeline:
+The project is organized into three primary directories, each handling a distinct stage of the machine learning pipeline:
 
-### 1. 📂 [Data Module](./Data)
-*   **Role**: Responsible for data loading, preprocessing, and management.
+### 1. 📂 [Data Directory](./Data)
+*   **Role**: Responsible for data downloading, preprocessing, and allocation.
 *   **Key Components**:
-    * `ds.py`: 
+    *   `data_config.py`: Centralized configuration managing directories, dataset sources, and paths.
+    *   `download_from_huggingface.py`: Utility script to download FLAN-v2 datasets directly from Hugging Face.
+    *   `data_allocation.py`: Core script that partitions the dataset for parallel training across multiple GPUs.
 
-
-### 2. 📂 [Inference Module](./Inference)
+### 2. 📂 [Inference Directory](./Inference)
 *   **Role**: Handles model inference and performance benchmarking.
 *   **Key Components**:
     *   `inference_config.py`: Centralized `LogoConfig` for managing model IDs, target layers, and sampling parameters.
     *   `logo.py`: Main inference engine refactored for modular execution.
     *   `run_lm_eval.py`: Benchmarking tool for evaluating model accuracy across various tasks (e.g., `arc_easy`).
 
-### 3. 📂 [Train Module](./Train)
+### 3. 📂 [Train Directory](./Train)
 *   **Role**: Manages parallel LoRA fine-tuning and automated resource optimization.
 *   **Key Components**:
     *   `train_config.py`: Integrated configuration for training hyperparameters and disk management.
@@ -46,9 +47,9 @@ The project is organized into three primary modules, each handling a distinct st
 
 The core workflow follows a **Data ➔ Train ➔ Inference** sequence.
 
-*  **Configure First**: You must always configure the respective config_file before running any module.
+*  **Configure First**: You must always configure the respective config file before running any processes.
 *  **Execute Pipeline**: Proceed with the workflow in the order of Data, Train, and then Inference.
-*  **Detailed Usage**: Please refer to the `README.md` inside each module directory for specific usage and commands.
+*  **Detailed Usage**: Please refer to the `README.md` inside each directory for specific usage and commands.
 
 ---
 
