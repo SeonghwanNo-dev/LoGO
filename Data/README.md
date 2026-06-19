@@ -9,7 +9,7 @@ This directory is designed for **efficient dataset management and distribution**
 * **`dataset_1/`**: (Outdated) Initial experimental datasets.
 * **`dataset_2/`**: The primary directory containing the datasets used in the LoGO paper.
 * **`download_from_huggingface.py`**: A utility script to download the FLAN-v2 dataset directly from Hugging Face and save it to the local disk
-* **`data_allocation.py`**: A core script that divides the entire dataset into multiple folders to enable **Parallel Training** across multiple GPUs.
+* **`data_allocation.py`**: A script that divides the entire dataset into multiple folders to enable **Parallel Training** across multiple GPUs.
 * **`data_config.py`**: A centralized configuration file for managing data module parameters, such as download paths, splitting logic, and target directories.
 
 ---
