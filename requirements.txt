@@ -1,0 +1,27 @@
+# python:3.12.3
+
+# Core AI/Deep Learning Frameworks
+torch
+accelerate
+
+# Hugging Face Ecosystem & Training/Evaluation
+transformers
+datasets
+peft
+trl
+safetensors
+lm-eval
+huggingface-hub
+
+# Tokenizers & Serialization Dependencies
+tiktoken
+sentencepiece
+protobuf
+
+# Data Analysis, Visualization & Utilities
+numpy
+pandas
+matplotlib
+seaborn
+tqdm
+wandb

@@ -42,6 +42,27 @@ The project is organized into three primary directories, each handling a distinc
 
 ### Environment Setup
 
+You can set up the environment using one of the following two options:
+
+#### Option 1: Docker (Recommended for GPU Isolation)
+
+Build the Docker image and run the container with GPU support:
+
+```bash
+# Build the Docker image
+gcsudo docker build --network host -t my-experiment .
+
+# Run the container (with GPU access, host networking, and workspace volume mount)
+gcsudo docker run --gpus all -it --network host -v $(pwd):/workspace my-experiment /bin/bash
+```
+
+#### Option 2: Local Virtual Environment (venv)
+
+Alternatively, initialize a local Python virtual environment and install all dependencies:
+
+```bash
+bash setup.sh
+```
 
 ### Basic Workflow
 
