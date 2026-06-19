@@ -62,6 +62,7 @@ Alternatively, initialize a local Python virtual environment and install all dep
 
 ```bash
 bash setup.sh
+source venv/bin/activate
 ```
 
 ### Basic Workflow
