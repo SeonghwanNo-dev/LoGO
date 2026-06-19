@@ -1,6 +1,6 @@
-# Inference Module Guide
+# Inference Directory Guide
 
-This module manages the inference process for the **LoGO** model.
+This directory manages the inference process for the **LoGO** model.
 
 ---
 

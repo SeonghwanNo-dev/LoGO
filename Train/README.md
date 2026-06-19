@@ -1,6 +1,6 @@
-# Train Module Guide
+# Train Directory Guide
 
-This module is designed for efficient **LoRA adapter training** and automated resource management.
+This directory is designed for efficient **LoRA adapter training** and automated resource management.
 
 ---
 

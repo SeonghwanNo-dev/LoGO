@@ -1,6 +1,6 @@
-# 📊 Data Module Guide
+# 📊 Data Directory Guide
 
-This module is designed for **efficient dataset management and distribution**, supporting parallel LoRA adapter training for the LoGO project.
+This directory is designed for **efficient dataset management and distribution**, supporting parallel LoRA adapter training for the LoGO project.
 
 ---
 
